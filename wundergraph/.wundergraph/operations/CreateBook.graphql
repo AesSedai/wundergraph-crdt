@@ -1,0 +1,5 @@
+mutation ($book: hasura_books_insert_input!) {
+    hasura_insert_books_one(object: $book) {
+        id
+    }
+}

@@ -1,0 +1,98 @@
+{
+  "graphql_operation_files": [
+    {
+      "operation_name": "CrdtAuthors",
+      "file_path": "CrdtAuthors.graphql",
+      "content": "subscription($limit: Int!, $sv: String! @hooksVariable, $initialSync: Boolean! = true @hooksVariable ){hasura_authors(limit: $limit, order_by: {created_at: asc}){__typename id name updated_at books(order_by: {created_at: asc}){__typename id title isbn updated_at}}}",
+      "path": []
+    },
+    {
+      "operation_name": "CreateBook",
+      "file_path": "CreateBook.graphql",
+      "content": "mutation($book: hasura_books_insert_input!){hasura_insert_books_one(object: $book){id}}",
+      "path": []
+    },
+    {
+      "operation_name": "CreateCrdt",
+      "file_path": "CreateCrdt.graphql",
+      "content": "mutation($crdt: hasura_crdt_insert_input!){hasura_insert_crdt_one(object: $crdt){id client state vector}}",
+      "path": []
+    },
+    {
+      "operation_name": "DeleteBook",
+      "file_path": "DeleteBook.graphql",
+      "content": "mutation($id: String!){hasura_delete_books_by_pk(id: $id){id}}",
+      "path": []
+    },
+    {
+      "operation_name": "QueryCrdt",
+      "file_path": "QueryCrdt.graphql",
+      "content": "query($client: String!){hasura_crdt(where: {client: {_eq: $client}}){id __typename client state vector created_at updated_at}}",
+      "path": []
+    },
+    {
+      "operation_name": "QueryGetAuthors",
+      "file_path": "QueryGetAuthors.graphql",
+      "content": "query($limit: Int!){hasura_authors(limit: $limit, order_by: {name: asc}){__typename id name updated_at books(order_by: {title: desc}){__typename id title isbn updated_at}}}",
+      "path": []
+    },
+    {
+      "operation_name": "QueryGetBooks",
+      "file_path": "QueryGetBooks.graphql",
+      "content": "query($limit: Int!){hasura_books(limit: $limit, order_by: {title: asc}){__typename id title isbn updated_at author {__typename id name updated_at}}}",
+      "path": []
+    },
+    {
+      "operation_name": "ResetAuthors",
+      "file_path": "ResetAuthors.graphql",
+      "content": "mutation{hasura_delete_authors(where: {id: {_neq: \"0\"}}){affected_rows}}",
+      "path": []
+    },
+    {
+      "operation_name": "SeedAuthors",
+      "file_path": "SeedAuthors.graphql",
+      "content": "mutation($authors: [hasura_authors_insert_input!]!){hasura_insert_authors(objects: $authors){affected_rows}}",
+      "path": []
+    },
+    {
+      "operation_name": "SubscribeAuthors",
+      "file_path": "SubscribeAuthors.graphql",
+      "content": "subscription($limit: Int!){hasura_authors(limit: $limit, order_by: {created_at: asc}){__typename id name updated_at books(order_by: {created_at: asc}){__typename id title isbn updated_at}}}",
+      "path": []
+    },
+    {
+      "operation_name": "SubscribeBooks",
+      "file_path": "SubscribeBooks.graphql",
+      "content": "subscription($limit: Int!){hasura_books(limit: $limit, order_by: {title: asc}){__typename id title isbn updated_at author {__typename id name updated_at}}}",
+      "path": []
+    },
+    {
+      "operation_name": "UpdateAuthorName",
+      "file_path": "UpdateAuthorName.graphql",
+      "content": "mutation($id: String!, $name: String!){hasura_update_authors_by_pk(pk_columns: {id: $id}, _set: {name: $name}){id}}",
+      "path": []
+    },
+    {
+      "operation_name": "UpdateBook",
+      "file_path": "UpdateBook.graphql",
+      "content": "mutation($id: String!, $title: String!){hasura_update_books_by_pk(pk_columns: {id: $id}, _set: {title: $title}){id}}",
+      "path": []
+    },
+    {
+      "operation_name": "UpdateCrdt",
+      "file_path": "UpdateCrdt.graphql",
+      "content": "mutation($client: String!, $state: String!, $vector: String!){hasura_update_crdt(where: {client: {_eq: $client}}, _set: {state: $state,vector: $vector}){returning {id}}}",
+      "path": []
+    },
+    {
+      "operation_name": "UpsertCrdt",
+      "file_path": "UpsertCrdt.graphql",
+      "content": "mutation($crdt: hasura_crdt_insert_input!){hasura_insert_crdt_one(object: $crdt, on_conflict: {constraint: crdt_client_unique,update_columns: [state,vector]}){id}}",
+      "path": []
+    }
+  ],
+  "typescript_operation_files": null,
+  "invalid": null,
+  "errors": null,
+  "info": null
+}

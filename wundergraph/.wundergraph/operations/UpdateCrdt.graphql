@@ -1,0 +1,7 @@
+mutation ($client: String!, $state: String!, $vector: String!) {
+    hasura_update_crdt(where: { client: { _eq: $client } }, _set: { state: $state, vector: $vector }) {
+        returning {
+            id
+        }
+    }
+}

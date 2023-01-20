@@ -1,0 +1,5 @@
+mutation {
+    hasura_delete_authors(where: { id: { _neq: "0" } }) {
+        affected_rows
+    }
+}

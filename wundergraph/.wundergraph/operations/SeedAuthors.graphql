@@ -1,0 +1,5 @@
+mutation ($authors: [hasura_authors_insert_input!]!) {
+    hasura_insert_authors(objects: $authors) {
+        affected_rows
+    }
+}

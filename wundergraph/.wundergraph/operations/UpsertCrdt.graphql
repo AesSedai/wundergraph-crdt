@@ -1,0 +1,5 @@
+mutation ($crdt: hasura_crdt_insert_input!) {
+    hasura_insert_crdt_one(object: $crdt, on_conflict: { constraint: crdt_client_unique, update_columns: [state, vector] }) {
+        id
+    }
+}

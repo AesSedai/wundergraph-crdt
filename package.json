@@ -1,0 +1,59 @@
+{
+    "name": "advent-of-code-2022",
+    "version": "1.0.0",
+    "description": "Advent of Code 2022",
+    "license": "ISC",
+    "author": "Aes Sedai",
+    "type": "module",
+    "prettier": {
+        "tabWidth": 4,
+        "arrowParens": "always",
+        "singleQuote": false,
+        "jsxSingleQuote": false,
+        "semi": false,
+        "trailingComma": "none",
+        "jsxBracketSameLine": true,
+        "printWidth": 120
+    },
+    "eslintConfig": {
+        "parser": "@typescript-eslint/parser",
+        "parserOptions": {
+            "project": "./tsconfig.json"
+        },
+        "plugins": [
+            "@typescript-eslint"
+        ],
+        "extends": [
+            "eslint:recommended",
+            "plugin:@typescript-eslint/recommended",
+            "plugin:import/typescript",
+            "prettier"
+        ],
+        "rules": {
+            "no-void": "off",
+            "@typescript-eslint/no-dynamic-delete": "off",
+            "@typescript-eslint/no-non-null-assertion": "off",
+            "@typescript-eslint/no-unused-vars": "off",
+            "@typescript-eslint/restrict-template-expressions": "off"
+        },
+        "root": true
+    },
+    "devDependencies": {
+        "@typescript-eslint/eslint-plugin": "^5.39.0",
+        "@typescript-eslint/parser": "^5.39.0",
+        "eslint": "^8.24.0",
+        "eslint-config-prettier": "^8.5.0",
+        "eslint-import-resolver-typescript": "^3.5.1",
+        "eslint-plugin-import": "^2.26.0",
+        "eslint-plugin-node": "^11.1.0",
+        "eslint-plugin-prettier": "^4.2.1",
+        "eslint-plugin-promise": "^6.0.1",
+        "eslint-plugin-unused-imports": "^2.0.0",
+        "prettier": "^2.7.1",
+        "prettier-plugin-organize-imports": "^3.1.1",
+        "typescript": "^4.7.4"
+    },
+    "dependencies": {
+        "@frameable/pigeon": "^1.4.3"
+    }
+}

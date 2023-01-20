@@ -1,0 +1,8 @@
+mutation ($crdt: hasura_crdt_insert_input!) {
+  hasura_insert_crdt_one(object: $crdt) {
+    id
+    client
+    state
+    vector
+  }
+}

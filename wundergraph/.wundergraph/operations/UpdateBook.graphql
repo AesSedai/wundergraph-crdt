@@ -1,0 +1,5 @@
+mutation ($id: String!, $title: String!) {
+    hasura_update_books_by_pk(pk_columns: { id: $id }, _set: { title: $title }) {
+        id
+    }
+}

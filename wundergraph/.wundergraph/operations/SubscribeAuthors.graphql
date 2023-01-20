@@ -1,0 +1,15 @@
+subscription ($limit: Int!) {
+    hasura_authors(limit: $limit, order_by: { created_at: asc }) {
+        __typename
+        id
+        name
+        updated_at
+        books(order_by: { created_at: asc }) {
+            __typename
+            id
+            title
+            isbn
+            updated_at
+        }
+    }
+}

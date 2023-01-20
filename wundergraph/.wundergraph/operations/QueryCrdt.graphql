@@ -1,0 +1,11 @@
+query ($client: String!) {
+    hasura_crdt(where: { client: { _eq: $client } }) {
+        id
+        __typename
+        client
+        state
+        vector
+        created_at
+        updated_at
+    }
+}

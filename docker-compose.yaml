@@ -1,0 +1,85 @@
+version: '3'
+
+services:
+    db:
+        image: postgres:13.2-alpine
+        environment:
+            POSTGRES_USER: ${POSTGRES_USER}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+            POSTGRES_DB: ${POSTGRES_DB}
+        ports:
+            - ${POSTGRES_PORT_HOST}:${POSTGRES_PORT_CONTAINER}
+        volumes:
+            - db:/var/lib/postgres/data
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+            interval: 5s
+            timeout: 5s
+            retries: 5
+        networks:
+            - app
+
+    client:
+        build: ./client
+        environment:
+            CHOKIDAR_USEPOLLING: "true"
+            FAST_REFRESH: "true"
+        volumes:
+            - ./client:/usr/src/app
+        ports:
+            - ${CLIENT_PORT_HOST}:${CLIENT_PORT_CONTAINER}
+        networks:
+            - app
+
+    server:
+        build: 
+            context: ./wundergraph
+            args:
+                WG_NODE_PORT: ${SERVER_PORT_CONTAINER}
+        environment:
+            WG_NODE_PORT: ${SERVER_PORT_CONTAINER}
+            HASURA_GRAPHQL_HTTP_URL: ${HASURA_HTTP_GRAPHQL_URL}
+            HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
+        depends_on:
+            graphql-engine:
+                condition: service_healthy
+        volumes:
+            - ./wundergraph:/usr/src/app
+        ports:
+            - ${SERVER_PORT_HOST}:${SERVER_PORT_CONTAINER}
+        networks:
+            - app
+
+    graphql-engine:
+        image: hasura/graphql-engine:v2.16.1.cli-migrations-v3
+        ports:
+            - ${HASURA_PORT_HOST}:${HASURA_PORT_CONTAINER}
+        depends_on:
+            db:
+                condition: service_healthy
+        healthcheck:
+            test: timeout 1s bash -c ':> /dev/tcp/127.0.0.1/8080' || exit 1
+            interval: 2s
+            timeout: 1s
+            retries: 10
+        environment:
+            HASURA_GRAPHQL_LOG_LEVEL: warn
+            HASURA_GRAPHQL_DATABASE_URL: ${HASURA_GRAPHQL_DATABASE_URL}
+            HASURA_GRAPHQL_ENABLE_REMOTE_SCHEMA_PERMISSIONS: "true"
+            ## enable the console served by server
+            HASURA_GRAPHQL_ENABLE_CONSOLE: "true" # set to "false" to disable console
+            ## enable debugging mode. It is recommended to disable this in production
+            HASURA_GRAPHQL_DEV_MODE: "true"
+            HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
+        #     HASURA_GRAPHQL_METADATA_DIR: /hasura-metadata
+        # volumes:
+        #     - ./hasura/metadata:/hasura-metadata
+        networks:
+            - app
+
+networks:
+    app:
+        driver: bridge
+
+volumes:
+    db:
