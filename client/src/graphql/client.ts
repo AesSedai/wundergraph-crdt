@@ -147,7 +147,7 @@ export const createClient = (config?: CreateClientConfig) => {
 		...defaultClientConfig,
 		...config,
 		operationMetadata,
-		// csrfEnabled: false,
+		csrfEnabled: false,
 	});
 };
 

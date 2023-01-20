@@ -14,6 +14,7 @@
         "@tanstack/react-query": "^4.22.0",
         "@tanstack/react-query-devtools": "^4.22.0",
         "@wundergraph/react-query": "^0.2.4",
+        "@wundergraph/sdk": "^0.131.1",
         "@wundergraph/swr": "^0.9.7",
         "async": "^3.2.3",
         "axios": "^0.25.0",
