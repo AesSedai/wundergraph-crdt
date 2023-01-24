@@ -42,6 +42,7 @@ services:
             WG_NODE_PORT: ${SERVER_PORT_CONTAINER}
             HASURA_GRAPHQL_HTTP_URL: ${HASURA_HTTP_GRAPHQL_URL}
             HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
+            CLIENT_HOST_URL: ${CLIENT_HOST_URL}
         depends_on:
             graphql-engine:
                 condition: service_healthy

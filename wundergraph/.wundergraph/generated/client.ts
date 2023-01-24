@@ -48,55 +48,55 @@ export const WUNDERGRAPH_S3_ENABLED = false;
 export const WUNDERGRAPH_AUTH_ENABLED = false;
 
 export const defaultClientConfig: ClientConfig = {
-	applicationHash: "e631cdc3",
+	applicationHash: "fcef382a",
 	baseURL: "http://localhost:9991",
 	sdkVersion: "0.132.1",
 };
 
 export const operationMetadata: OperationMetadata = {
-	"": {
+	CrdtAuthors: {
 		requiresAuthentication: false,
 	},
-	"": {
+	CreateBook: {
 		requiresAuthentication: false,
 	},
-	"": {
+	CreateCrdt: {
 		requiresAuthentication: false,
 	},
-	"": {
+	DeleteBook: {
 		requiresAuthentication: false,
 	},
-	"": {
+	QueryCrdt: {
 		requiresAuthentication: false,
 	},
-	"": {
+	QueryGetAuthors: {
 		requiresAuthentication: false,
 	},
-	"": {
+	QueryGetBooks: {
 		requiresAuthentication: false,
 	},
-	"": {
+	ResetAuthors: {
 		requiresAuthentication: false,
 	},
-	"": {
+	SeedAuthors: {
 		requiresAuthentication: false,
 	},
-	"": {
+	SubscribeAuthors: {
 		requiresAuthentication: false,
 	},
-	"": {
+	SubscribeBooks: {
 		requiresAuthentication: false,
 	},
-	"": {
+	UpdateAuthorName: {
 		requiresAuthentication: false,
 	},
-	"": {
+	UpdateBook: {
 		requiresAuthentication: false,
 	},
-	"": {
+	UpdateCrdt: {
 		requiresAuthentication: false,
 	},
-	"": {
+	UpsertCrdt: {
 		requiresAuthentication: false,
 	},
 };
@@ -146,19 +146,19 @@ export const createClient = (config?: CreateClientConfig) => {
 };
 
 export type Queries = {
-	"": {
+	QueryCrdt: {
 		input: QueryCrdtInput;
 		data: QueryCrdtResponseData;
 		requiresAuthentication: false;
 		liveQuery: boolean;
 	};
-	"": {
+	QueryGetAuthors: {
 		input: QueryGetAuthorsInput;
 		data: QueryGetAuthorsResponseData;
 		requiresAuthentication: false;
 		liveQuery: boolean;
 	};
-	"": {
+	QueryGetBooks: {
 		input: QueryGetBooksInput;
 		data: QueryGetBooksResponseData;
 		requiresAuthentication: false;
@@ -167,47 +167,47 @@ export type Queries = {
 };
 
 export type Mutations = {
-	"": {
+	CreateBook: {
 		input: CreateBookInput;
 		data: CreateBookResponseData;
 		requiresAuthentication: false;
 	};
-	"": {
+	CreateCrdt: {
 		input: CreateCrdtInput;
 		data: CreateCrdtResponseData;
 		requiresAuthentication: false;
 	};
-	"": {
+	DeleteBook: {
 		input: DeleteBookInput;
 		data: DeleteBookResponseData;
 		requiresAuthentication: false;
 	};
-	"": {
+	ResetAuthors: {
 		input?: undefined;
 		data: ResetAuthorsResponseData;
 		requiresAuthentication: false;
 	};
-	"": {
+	SeedAuthors: {
 		input: SeedAuthorsInput;
 		data: SeedAuthorsResponseData;
 		requiresAuthentication: false;
 	};
-	"": {
+	UpdateAuthorName: {
 		input: UpdateAuthorNameInput;
 		data: UpdateAuthorNameResponseData;
 		requiresAuthentication: false;
 	};
-	"": {
+	UpdateBook: {
 		input: UpdateBookInput;
 		data: UpdateBookResponseData;
 		requiresAuthentication: false;
 	};
-	"": {
+	UpdateCrdt: {
 		input: UpdateCrdtInput;
 		data: UpdateCrdtResponseData;
 		requiresAuthentication: false;
 	};
-	"": {
+	UpsertCrdt: {
 		input: UpsertCrdtInput;
 		data: UpsertCrdtResponseData;
 		requiresAuthentication: false;
@@ -215,17 +215,17 @@ export type Mutations = {
 };
 
 export type Subscriptions = {
-	"": {
+	CrdtAuthors: {
 		input: CrdtAuthorsInput;
 		data: CrdtAuthorsResponseData;
 		requiresAuthentication: false;
 	};
-	"": {
+	SubscribeAuthors: {
 		input: SubscribeAuthorsInput;
 		data: SubscribeAuthorsResponseData;
 		requiresAuthentication: false;
 	};
-	"": {
+	SubscribeBooks: {
 		input: SubscribeBooksInput;
 		data: SubscribeBooksResponseData;
 		requiresAuthentication: false;
@@ -233,19 +233,19 @@ export type Subscriptions = {
 };
 
 export type LiveQueries = {
-	"": {
+	QueryCrdt: {
 		input: QueryCrdtInput;
 		data: QueryCrdtResponseData;
 		liveQuery: true;
 		requiresAuthentication: false;
 	};
-	"": {
+	QueryGetAuthors: {
 		input: QueryGetAuthorsInput;
 		data: QueryGetAuthorsResponseData;
 		liveQuery: true;
 		requiresAuthentication: false;
 	};
-	"": {
+	QueryGetBooks: {
 		input: QueryGetBooksInput;
 		data: QueryGetBooksResponseData;
 		liveQuery: true;

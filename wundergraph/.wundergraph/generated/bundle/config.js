@@ -329,7 +329,7 @@ var hasura = import_sdk2.introspect.graphql({
   ],
   cors: {
     ...import_sdk2.cors.allowAll,
-    allowedOrigins: ["*"]
+    allowedOrigins: [new import_sdk2.EnvironmentVariable("CLIENT_HOST_URL")]
   },
   dotGraphQLConfig: {
     hasDotWunderGraphDirectory: false
