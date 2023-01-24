@@ -149,7 +149,8 @@ export interface HookRequestWithInput<Input> extends HookRequest {
 	input: Input;
 }
 
-export interface HooksConfig extends HooksConfiguration<Queries, Mutations, Subscriptions, User, InternalClient> {
+export interface HooksConfig
+	extends HooksConfiguration<Queries, Mutations, Subscriptions, Uploads, User, InternalClient> {
 	global?: GlobalHooksConfig;
 	authentication?: {
 		postAuthentication?: (hook: AuthenticationHookRequest<User, InternalClient>) => Promise<void>;
@@ -358,3 +359,5 @@ export interface Subscriptions {
 		) => Promise<SubscribeBooksResponse>;
 	};
 }
+
+export interface Uploads {}

@@ -1,5 +1,4 @@
 import { Box, Button, Divider, Stack, Theme } from "@mui/material"
-import { makeStyles } from "@mui/styles"
 import async from "async"
 import { last, random, sample } from "lodash"
 import { DateTime } from "luxon"
@@ -9,10 +8,7 @@ import { db } from "../../redux/store/storage"
 import { sleep } from "../../utils/sleep"
 import { useMutation, useSubscription } from "../../utils/wundergraph"
 
-const useStyles = makeStyles<Theme>((theme) => ({}))
-
 export const Sidebar: FC = () => {
-    const classes = useStyles()
     const [running, setRunning] = useState<boolean>(false)
     const [actions, setActions] = useState({ total: 100, current: 0 })
     const [actionList, setActionList] = useState<string[]>([])

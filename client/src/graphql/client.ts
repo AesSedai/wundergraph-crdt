@@ -8,7 +8,6 @@ import {
 	OperationsDefinition,
 	SubscriptionEventHandler,
 	SubscriptionRequestOptions,
-	UploadRequestOptions,
 	User,
 } from "@wundergraph/sdk/client";
 import type {
@@ -48,12 +47,10 @@ export type UserRole = "admin" | "user";
 export const WUNDERGRAPH_S3_ENABLED = false;
 export const WUNDERGRAPH_AUTH_ENABLED = false;
 
-export type UploadConfig = UploadRequestOptions<never>;
-
 export const defaultClientConfig: ClientConfig = {
-	applicationHash: "269980b1",
+	applicationHash: "770caba9",
 	baseURL: "http://localhost:9991",
-	sdkVersion: "0.131.1",
+	sdkVersion: "0.132.1",
 };
 
 export const operationMetadata: OperationMetadata = {
@@ -130,9 +127,6 @@ export class WunderGraphClient extends Client {
 		cb: SubscriptionEventHandler<Data>
 	) {
 		return super.subscribe(options, cb);
-	}
-	public async uploadFiles(config: UploadConfig) {
-		return super.uploadFiles(config);
 	}
 	public login(authProviderID: Operations["authProvider"], redirectURI?: string) {
 		return super.login(authProviderID, redirectURI);
@@ -259,4 +253,4 @@ export type LiveQueries = {
 	};
 };
 
-export interface Operations extends OperationsDefinition<Queries, Mutations, Subscriptions, UserRole> {}
+export interface Operations extends OperationsDefinition<Queries, Mutations, Subscriptions, UserRole, {}> {}

@@ -1,15 +1,11 @@
 import ChevronRightIcon from "@mui/icons-material/ChevronRight"
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
 import { TreeItem, TreeView } from "@mui/lab"
-import { Box, Button, Stack, Theme, Typography } from "@mui/material"
-import { makeStyles } from "@mui/styles"
+import { Box, Button, Stack, Typography } from "@mui/material"
 import { FC, useEffect, useState } from "react"
 import { useSubscription } from "../../utils/wundergraph"
 
-const useStyles = makeStyles<Theme>((theme) => ({}))
-
 export const AuthorSub: FC = () => {
-    const classes = useStyles()
     const [expanded, setExpanded] = useState<string[]>([])
     const [totalData, setTotalData] = useState<number>(0)
 

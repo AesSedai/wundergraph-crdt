@@ -25,7 +25,7 @@ configureWunderGraphApplication({
     ],
     cors: {
         ...cors.allowAll,
-        allowedOrigins: ["http://127.0.0.1:3000/"]
+        allowedOrigins: ["*"]
     },
     dotGraphQLConfig: {
         hasDotWunderGraphDirectory: false

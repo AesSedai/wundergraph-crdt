@@ -18,7 +18,7 @@
             "url": {
               "path": [
                 "operations",
-                "CrdtAuthors"
+                "undefined"
               ],
               "host": [
                 "{{apiBaseUrl}}"
@@ -72,7 +72,7 @@
             "url": {
               "path": [
                 "operations",
-                "QueryCrdt"
+                "undefined"
               ],
               "host": [
                 "{{apiBaseUrl}}"
@@ -108,7 +108,7 @@
             "url": {
               "path": [
                 "operations",
-                "QueryGetAuthors"
+                "undefined"
               ],
               "host": [
                 "{{apiBaseUrl}}"
@@ -144,7 +144,7 @@
             "url": {
               "path": [
                 "operations",
-                "QueryGetBooks"
+                "undefined"
               ],
               "host": [
                 "{{apiBaseUrl}}"
@@ -180,7 +180,7 @@
             "url": {
               "path": [
                 "operations",
-                "SubscribeAuthors"
+                "undefined"
               ],
               "host": [
                 "{{apiBaseUrl}}"
@@ -216,7 +216,7 @@
             "url": {
               "path": [
                 "operations",
-                "SubscribeBooks"
+                "undefined"
               ],
               "host": [
                 "{{apiBaseUrl}}"
@@ -266,7 +266,7 @@
             "url": {
               "path": [
                 "operations",
-                "CreateBook"
+                "undefined"
               ],
               "host": [
                 "{{apiBaseUrl}}"
@@ -290,7 +290,7 @@
             "url": {
               "path": [
                 "operations",
-                "CreateCrdt"
+                "undefined"
               ],
               "host": [
                 "{{apiBaseUrl}}"
@@ -314,7 +314,7 @@
             "url": {
               "path": [
                 "operations",
-                "DeleteBook"
+                "undefined"
               ],
               "host": [
                 "{{apiBaseUrl}}"
@@ -348,7 +348,7 @@
             "url": {
               "path": [
                 "operations",
-                "ResetAuthors"
+                "undefined"
               ],
               "host": [
                 "{{apiBaseUrl}}"
@@ -372,7 +372,7 @@
             "url": {
               "path": [
                 "operations",
-                "SeedAuthors"
+                "undefined"
               ],
               "host": [
                 "{{apiBaseUrl}}"
@@ -396,7 +396,7 @@
             "url": {
               "path": [
                 "operations",
-                "UpdateAuthorName"
+                "undefined"
               ],
               "host": [
                 "{{apiBaseUrl}}"
@@ -439,7 +439,7 @@
             "url": {
               "path": [
                 "operations",
-                "UpdateBook"
+                "undefined"
               ],
               "host": [
                 "{{apiBaseUrl}}"
@@ -482,7 +482,7 @@
             "url": {
               "path": [
                 "operations",
-                "UpdateCrdt"
+                "undefined"
               ],
               "host": [
                 "{{apiBaseUrl}}"
@@ -534,7 +534,7 @@
             "url": {
               "path": [
                 "operations",
-                "UpsertCrdt"
+                "undefined"
               ],
               "host": [
                 "{{apiBaseUrl}}"

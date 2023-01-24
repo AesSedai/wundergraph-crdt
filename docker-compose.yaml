@@ -24,6 +24,8 @@ services:
         environment:
             CHOKIDAR_USEPOLLING: "true"
             FAST_REFRESH: "true"
+            VITE_PORT: ${CLIENT_PORT_HOST}
+            VITE_SERVER_URL: ${SERVER_HOST_URL}
         volumes:
             - ./client:/usr/src/app
         ports:

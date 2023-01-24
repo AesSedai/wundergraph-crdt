@@ -2,7 +2,7 @@ import { configureWunderGraphServer } from "@wundergraph/sdk/server"
 import { GraphQLObjectType, GraphQLSchema, GraphQLString } from "graphql"
 import { fromUint8Array, toUint8Array } from "js-base64"
 import * as Y from "yjs"
-import { CrdtAuthorsResponse } from "./generated/models"
+// import { CrdtAuthorsResponse } from "./generated/models"
 import type { HooksConfig } from "./generated/wundergraph.hooks"
 import type { InternalClient } from "./generated/wundergraph.internal.client"
 import type { GraphQLExecutionContext } from "./generated/wundergraph.server"
@@ -80,7 +80,7 @@ export default configureWunderGraphServer<HooksConfig, InternalClient>(() => ({
                     // console.log("encoded state", fromUint8Array(Y.encodeStateAsUpdate(ydoc1)))
 
                     // mangle the return into {data: string} so we can handle it on the client
-                    return { data: fromUint8Array(diff) } as unknown as CrdtAuthorsResponse
+                    return { data: fromUint8Array(diff) } as unknown as any
                 }
             }
         }

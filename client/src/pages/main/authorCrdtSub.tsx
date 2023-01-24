@@ -1,15 +1,11 @@
 import ChevronRightIcon from "@mui/icons-material/ChevronRight"
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
 import { TreeItem, TreeView } from "@mui/lab"
-import { Box, Button, Stack, Theme, Typography } from "@mui/material"
-import { makeStyles } from "@mui/styles"
+import { Box, Button, Stack, Typography } from "@mui/material"
 import { FC, useState } from "react"
 import { useAppSelector } from "../../redux/store/hooks"
 
-const useStyles = makeStyles<Theme>((theme) => ({}))
-
 export const AuthorCrdtSub: FC = () => {
-    const classes = useStyles()
     const [expanded, setExpanded] = useState<string[]>([])
 
     const { data } = useAppSelector((state) => state.author.response)
