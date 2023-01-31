@@ -96,7 +96,8 @@ export const Sidebar: FC = () => {
                     book: {
                         author_id: randomAuthor.id,
                         title: title,
-                        isbn: `978-${random(1, 9)}-${random(1000, 9999)}-${random(1000, 9999)}-${random(1, 9)}`
+                        isbn: `978-${random(1, 9)}-${random(1000, 9999)}-${random(1000, 9999)}-${random(1, 9)}`,
+                        published_at: DateTime.now().toString()
                     }
                 })
             }
@@ -120,7 +121,7 @@ export const Sidebar: FC = () => {
     }
 
     const randomActions = async () => {
-        const ops = [updateAuthor, updateBook, addBook, deleteBook]
+        const ops = [updateAuthor, updateBook] //, addBook, deleteBook]
         setActions({ total: 100, current: 0 })
         setRunning(true)
         await async.eachSeries(Array.from(Array(100).keys()), async (f: number) => {
@@ -163,7 +164,8 @@ export const Sidebar: FC = () => {
                     data: Array.from(Array(random(1, 5)), (_j, j) => {
                         return {
                             title: `Book ${(i + 1 + lastAuthorIdx) * 1000 + j}`,
-                            isbn: `978-${random(1, 9)}-${random(1000, 9999)}-${random(1000, 9999)}-${random(1, 9)}`
+                            isbn: `978-${random(1, 9)}-${random(1000, 9999)}-${random(1000, 9999)}-${random(1, 9)}`,
+                            published_at: DateTime.now().toString()
                         }
                     })
                 }

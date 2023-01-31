@@ -110,12 +110,73 @@ interface TargetTypes {
 		| "updated_at"
 		| "_join";
 	hasura_books_mutation_response: "affected_rows" | "returning" | "_join";
-	hasura_crdt: "client" | "created_at" | "id" | "state" | "updated_at" | "vector" | "_join";
+	hasura_clients: "client" | "crdt" | "crdt_id" | "created_at" | "guid" | "id" | "updated_at" | "vector" | "_join";
+	hasura_clients_aggregate: "aggregate" | "nodes" | "_join";
+	hasura_clients_aggregate_fields: "count" | "max" | "min" | "_join";
+	hasura_clients_max_fields: "client" | "crdt_id" | "created_at" | "guid" | "id" | "updated_at" | "vector" | "_join";
+	hasura_clients_min_fields: "client" | "crdt_id" | "created_at" | "guid" | "id" | "updated_at" | "vector" | "_join";
+	hasura_clients_mutation_response: "affected_rows" | "returning" | "_join";
+	hasura_crdt:
+		| "client"
+		| "clients"
+		| "clients_aggregate"
+		| "created_at"
+		| "guid"
+		| "id"
+		| "room"
+		| "state"
+		| "updated_at"
+		| "vector"
+		| "_join";
 	hasura_crdt_aggregate: "aggregate" | "nodes" | "_join";
 	hasura_crdt_aggregate_fields: "count" | "max" | "min" | "_join";
-	hasura_crdt_max_fields: "client" | "created_at" | "id" | "state" | "updated_at" | "vector" | "_join";
-	hasura_crdt_min_fields: "client" | "created_at" | "id" | "state" | "updated_at" | "vector" | "_join";
+	hasura_crdt_max_fields:
+		| "client"
+		| "created_at"
+		| "guid"
+		| "id"
+		| "room"
+		| "state"
+		| "updated_at"
+		| "vector"
+		| "_join";
+	hasura_crdt_min_fields:
+		| "client"
+		| "created_at"
+		| "guid"
+		| "id"
+		| "room"
+		| "state"
+		| "updated_at"
+		| "vector"
+		| "_join";
 	hasura_crdt_mutation_response: "affected_rows" | "returning" | "_join";
+	hasura_knex_migrations: "batch" | "id" | "migration_time" | "name" | "_join";
+	hasura_knex_migrations_aggregate: "aggregate" | "nodes" | "_join";
+	hasura_knex_migrations_aggregate_fields:
+		| "avg"
+		| "count"
+		| "max"
+		| "min"
+		| "stddev"
+		| "stddev_pop"
+		| "stddev_samp"
+		| "sum"
+		| "var_pop"
+		| "var_samp"
+		| "variance"
+		| "_join";
+	hasura_knex_migrations_avg_fields: "batch" | "id" | "_join";
+	hasura_knex_migrations_max_fields: "batch" | "id" | "migration_time" | "name" | "_join";
+	hasura_knex_migrations_min_fields: "batch" | "id" | "migration_time" | "name" | "_join";
+	hasura_knex_migrations_mutation_response: "affected_rows" | "returning" | "_join";
+	hasura_knex_migrations_stddev_fields: "batch" | "id" | "_join";
+	hasura_knex_migrations_stddev_pop_fields: "batch" | "id" | "_join";
+	hasura_knex_migrations_stddev_samp_fields: "batch" | "id" | "_join";
+	hasura_knex_migrations_sum_fields: "batch" | "id" | "_join";
+	hasura_knex_migrations_var_pop_fields: "batch" | "id" | "_join";
+	hasura_knex_migrations_var_samp_fields: "batch" | "id" | "_join";
+	hasura_knex_migrations_variance_fields: "batch" | "id" | "_join";
 }
 
 interface SourceFields {
@@ -153,6 +214,23 @@ interface SourceFields {
 	hasura_books_by_pk: {
 		id: null;
 	};
+	hasura_clients: {
+		distinct_on: null;
+		limit: null;
+		offset: null;
+		order_by: null;
+		where: null;
+	};
+	hasura_clients_aggregate: {
+		distinct_on: null;
+		limit: null;
+		offset: null;
+		order_by: null;
+		where: null;
+	};
+	hasura_clients_by_pk: {
+		id: null;
+	};
 	hasura_crdt: {
 		distinct_on: null;
 		limit: null;
@@ -168,6 +246,23 @@ interface SourceFields {
 		where: null;
 	};
 	hasura_crdt_by_pk: {
+		id: null;
+	};
+	hasura_knex_migrations: {
+		distinct_on: null;
+		limit: null;
+		offset: null;
+		order_by: null;
+		where: null;
+	};
+	hasura_knex_migrations_aggregate: {
+		distinct_on: null;
+		limit: null;
+		offset: null;
+		order_by: null;
+		where: null;
+	};
+	hasura_knex_migrations_by_pk: {
 		id: null;
 	};
 	public_hello: {};

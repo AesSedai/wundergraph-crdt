@@ -20,6 +20,10 @@ interface Schema {
 		input: JSONSchema7;
 		response: JSONSchema7;
 	};
+	QueryClient: {
+		input: JSONSchema7;
+		response: JSONSchema7;
+	};
 	QueryCrdt: {
 		input: JSONSchema7;
 		response: JSONSchema7;
@@ -60,6 +64,10 @@ interface Schema {
 		input: JSONSchema7;
 		response: JSONSchema7;
 	};
+	UpsertClient: {
+		input: JSONSchema7;
+		response: JSONSchema7;
+	};
 	UpsertCrdt: {
 		input: JSONSchema7;
 		response: JSONSchema7;
@@ -70,10 +78,15 @@ const jsonSchema: Schema = {
 	CrdtAuthors: {
 		input: {
 			type: "object",
-			properties: { limit: { type: "integer" }, sv: { type: "string" }, initialSync: { type: "boolean" } },
+			properties: {
+				limit: { type: "integer" },
+				sv: { type: "string" },
+				clientId: { type: "string" },
+				guid: { type: "string" },
+			},
 			additionalProperties: false,
 			definitions: {},
-			required: ["limit", "sv"],
+			required: ["limit", "sv", "clientId", "guid"],
 		},
 		response: {
 			type: "object",
@@ -102,12 +115,12 @@ const jsonSchema: Schema = {
 												updated_at: { type: "string" },
 											},
 											additionalProperties: false,
-											required: ["__typename", "id", "updated_at"],
+											required: ["__typename", "id", "title", "isbn", "updated_at"],
 										},
 									},
 								},
 								additionalProperties: false,
-								required: ["__typename", "id", "updated_at", "books"],
+								required: ["__typename", "id", "name", "updated_at", "books"],
 							},
 						},
 					},
@@ -333,11 +346,201 @@ const jsonSchema: Schema = {
 					type: "object",
 					properties: {
 						client: { type: ["string", "null"] },
+						clients: { $ref: "#/definitions/hasura_clients_arr_rel_insert_input" },
 						created_at: { type: ["string", "null"] },
+						guid: { type: ["string", "null"] },
 						id: { type: ["string", "null"] },
+						room: { type: ["string", "null"] },
 						state: { type: ["string", "null"] },
 						updated_at: { type: ["string", "null"] },
 						vector: { type: ["string", "null"] },
+					},
+				},
+				hasura_clients_arr_rel_insert_input: {
+					additionalProperties: false,
+					type: ["object", "null"],
+					properties: {
+						data: { type: "array", minItems: 1, items: { $ref: "#/definitions/hasura_clients_insert_input" } },
+						on_conflict: { $ref: "#/definitions/hasura_clients_on_conflict" },
+					},
+				},
+				hasura_clients_insert_input: {
+					additionalProperties: false,
+					type: "object",
+					properties: {
+						client: { type: ["string", "null"] },
+						crdt: { $ref: "#/definitions/hasura_crdt_obj_rel_insert_input" },
+						crdt_id: { type: ["string", "null"] },
+						created_at: { type: ["string", "null"] },
+						guid: { type: ["string", "null"] },
+						id: { type: ["string", "null"] },
+						updated_at: { type: ["string", "null"] },
+						vector: { type: ["string", "null"] },
+					},
+				},
+				hasura_crdt_obj_rel_insert_input: {
+					additionalProperties: false,
+					type: ["object", "null"],
+					properties: {
+						data: { $ref: "#/definitions/hasura_crdt_insert_input" },
+						on_conflict: { $ref: "#/definitions/hasura_crdt_on_conflict" },
+					},
+				},
+				hasura_crdt_on_conflict: {
+					additionalProperties: false,
+					type: ["object", "null"],
+					properties: {
+						constraint: { type: "string", enum: ["crdt_client_unique", "crdt_guid_unique", "crdt_pkey"] },
+						update_columns: {
+							type: ["array", "null"],
+							items: {
+								type: "string",
+								enum: ["client", "created_at", "guid", "id", "room", "state", "updated_at", "vector"],
+							},
+						},
+						where: { $ref: "#/definitions/hasura_crdt_bool_exp" },
+					},
+				},
+				hasura_crdt_bool_exp: {
+					additionalProperties: false,
+					type: ["object", "null"],
+					properties: {
+						_and: { type: ["array", "null"], items: { $ref: "#/definitions/hasura_crdt_bool_exp" } },
+						_not: { $ref: "#/definitions/hasura_crdt_bool_exp" },
+						_or: { type: ["array", "null"], items: { $ref: "#/definitions/hasura_crdt_bool_exp" } },
+						client: { $ref: "#/definitions/hasura_String_comparison_exp" },
+						clients: { $ref: "#/definitions/hasura_clients_bool_exp" },
+						clients_aggregate: { $ref: "#/definitions/hasura_clients_aggregate_bool_exp" },
+						created_at: { $ref: "#/definitions/hasura_timestamptz_comparison_exp" },
+						guid: { $ref: "#/definitions/hasura_uuid_comparison_exp" },
+						id: { $ref: "#/definitions/hasura_String_comparison_exp" },
+						room: { $ref: "#/definitions/hasura_String_comparison_exp" },
+						state: { $ref: "#/definitions/hasura_String_comparison_exp" },
+						updated_at: { $ref: "#/definitions/hasura_timestamptz_comparison_exp" },
+						vector: { $ref: "#/definitions/hasura_String_comparison_exp" },
+					},
+				},
+				hasura_String_comparison_exp: {
+					additionalProperties: false,
+					type: ["object", "null"],
+					properties: {
+						_eq: { type: ["string", "null"] },
+						_gt: { type: ["string", "null"] },
+						_gte: { type: ["string", "null"] },
+						_ilike: { type: ["string", "null"] },
+						_in: { type: ["array", "null"], items: { type: "string" } },
+						_iregex: { type: ["string", "null"] },
+						_is_null: { type: ["boolean", "null"] },
+						_like: { type: ["string", "null"] },
+						_lt: { type: ["string", "null"] },
+						_lte: { type: ["string", "null"] },
+						_neq: { type: ["string", "null"] },
+						_nilike: { type: ["string", "null"] },
+						_nin: { type: ["array", "null"], items: { type: "string" } },
+						_niregex: { type: ["string", "null"] },
+						_nlike: { type: ["string", "null"] },
+						_nregex: { type: ["string", "null"] },
+						_nsimilar: { type: ["string", "null"] },
+						_regex: { type: ["string", "null"] },
+						_similar: { type: ["string", "null"] },
+					},
+				},
+				hasura_clients_bool_exp: {
+					additionalProperties: false,
+					type: ["object", "null"],
+					properties: {
+						_and: { type: ["array", "null"], items: { $ref: "#/definitions/hasura_clients_bool_exp" } },
+						_not: { $ref: "#/definitions/hasura_clients_bool_exp" },
+						_or: { type: ["array", "null"], items: { $ref: "#/definitions/hasura_clients_bool_exp" } },
+						client: { $ref: "#/definitions/hasura_String_comparison_exp" },
+						crdt: { $ref: "#/definitions/hasura_crdt_bool_exp" },
+						crdt_id: { $ref: "#/definitions/hasura_String_comparison_exp" },
+						created_at: { $ref: "#/definitions/hasura_timestamptz_comparison_exp" },
+						guid: { $ref: "#/definitions/hasura_uuid_comparison_exp" },
+						id: { $ref: "#/definitions/hasura_String_comparison_exp" },
+						updated_at: { $ref: "#/definitions/hasura_timestamptz_comparison_exp" },
+						vector: { $ref: "#/definitions/hasura_String_comparison_exp" },
+					},
+				},
+				hasura_timestamptz_comparison_exp: {
+					additionalProperties: false,
+					type: ["object", "null"],
+					properties: {
+						_eq: { type: ["string", "null"] },
+						_gt: { type: ["string", "null"] },
+						_gte: { type: ["string", "null"] },
+						_in: { type: ["array", "null"], items: { type: "string" } },
+						_is_null: { type: ["boolean", "null"] },
+						_lt: { type: ["string", "null"] },
+						_lte: { type: ["string", "null"] },
+						_neq: { type: ["string", "null"] },
+						_nin: { type: ["array", "null"], items: { type: "string" } },
+					},
+				},
+				hasura_uuid_comparison_exp: {
+					additionalProperties: false,
+					type: ["object", "null"],
+					properties: {
+						_eq: { type: ["string", "null"] },
+						_gt: { type: ["string", "null"] },
+						_gte: { type: ["string", "null"] },
+						_in: { type: ["array", "null"], items: { type: "string" } },
+						_is_null: { type: ["boolean", "null"] },
+						_lt: { type: ["string", "null"] },
+						_lte: { type: ["string", "null"] },
+						_neq: { type: ["string", "null"] },
+						_nin: { type: ["array", "null"], items: { type: "string" } },
+					},
+				},
+				hasura_clients_aggregate_bool_exp: {
+					additionalProperties: false,
+					type: ["object", "null"],
+					properties: { count: { $ref: "#/definitions/hasura_clients_aggregate_bool_exp_count" } },
+				},
+				hasura_clients_aggregate_bool_exp_count: {
+					additionalProperties: false,
+					type: ["object", "null"],
+					properties: {
+						arguments: {
+							type: ["array", "null"],
+							items: {
+								type: "string",
+								enum: ["client", "crdt_id", "created_at", "guid", "id", "updated_at", "vector"],
+							},
+						},
+						distinct: { type: ["boolean", "null"] },
+						filter: { $ref: "#/definitions/hasura_clients_bool_exp" },
+						predicate: { $ref: "#/definitions/hasura_Int_comparison_exp" },
+					},
+				},
+				hasura_Int_comparison_exp: {
+					additionalProperties: false,
+					type: "object",
+					properties: {
+						_eq: { type: ["integer", "null"] },
+						_gt: { type: ["integer", "null"] },
+						_gte: { type: ["integer", "null"] },
+						_in: { type: ["array", "null"], items: { type: "integer" } },
+						_is_null: { type: ["boolean", "null"] },
+						_lt: { type: ["integer", "null"] },
+						_lte: { type: ["integer", "null"] },
+						_neq: { type: ["integer", "null"] },
+						_nin: { type: ["array", "null"], items: { type: "integer" } },
+					},
+				},
+				hasura_clients_on_conflict: {
+					additionalProperties: false,
+					type: ["object", "null"],
+					properties: {
+						constraint: { type: "string", enum: ["clients_client_unique", "clients_pkey"] },
+						update_columns: {
+							type: ["array", "null"],
+							items: {
+								type: "string",
+								enum: ["client", "crdt_id", "created_at", "guid", "id", "updated_at", "vector"],
+							},
+						},
+						where: { $ref: "#/definitions/hasura_clients_bool_exp" },
 					},
 				},
 			},
@@ -352,13 +555,15 @@ const jsonSchema: Schema = {
 						hasura_insert_crdt_one: {
 							type: "object",
 							properties: {
+								__typename: { type: "string", enum: ["hasura_crdt"] },
 								id: { type: "string" },
+								guid: { type: "string" },
 								client: { type: "string" },
 								state: { type: "string" },
 								vector: { type: "string" },
 							},
 							additionalProperties: false,
-							required: ["id"],
+							required: ["__typename", "id", "guid", "client", "state", "vector"],
 						},
 					},
 					additionalProperties: false,
@@ -394,13 +599,44 @@ const jsonSchema: Schema = {
 			additionalProperties: false,
 		},
 	},
+	QueryClient: {
+		input: {
+			type: "object",
+			properties: { client: { type: "string" }, room: { type: "string" } },
+			additionalProperties: false,
+			definitions: {},
+			required: ["client", "room"],
+		},
+		response: {
+			type: "object",
+			properties: {
+				data: {
+					type: "object",
+					properties: {
+						hasura_clients: {
+							type: "array",
+							items: {
+								type: "object",
+								properties: { id: { type: "string" }, vector: { type: "string" } },
+								additionalProperties: false,
+								required: ["id", "vector"],
+							},
+						},
+					},
+					additionalProperties: false,
+					required: ["hasura_clients"],
+				},
+			},
+			additionalProperties: false,
+		},
+	},
 	QueryCrdt: {
 		input: {
 			type: "object",
-			properties: { client: { type: "string" } },
+			properties: { room: { type: "string" } },
 			additionalProperties: false,
 			definitions: {},
-			required: ["client"],
+			required: ["room"],
 		},
 		response: {
 			type: "object",
@@ -416,13 +652,12 @@ const jsonSchema: Schema = {
 									id: { type: "string" },
 									__typename: { type: "string", enum: ["hasura_crdt"] },
 									client: { type: "string" },
+									guid: { type: "string" },
 									state: { type: "string" },
 									vector: { type: "string" },
-									created_at: { type: "string" },
-									updated_at: { type: "string" },
 								},
 								additionalProperties: false,
-								required: ["id", "__typename", "created_at", "updated_at"],
+								required: ["id", "__typename", "client", "guid", "state", "vector"],
 							},
 						},
 					},
@@ -468,12 +703,12 @@ const jsonSchema: Schema = {
 												updated_at: { type: "string" },
 											},
 											additionalProperties: false,
-											required: ["__typename", "id", "updated_at"],
+											required: ["__typename", "id", "title", "isbn", "updated_at"],
 										},
 									},
 								},
 								additionalProperties: false,
-								required: ["__typename", "id", "updated_at", "books"],
+								required: ["__typename", "id", "name", "updated_at", "books"],
 							},
 						},
 					},
@@ -517,11 +752,11 @@ const jsonSchema: Schema = {
 											updated_at: { type: "string" },
 										},
 										additionalProperties: false,
-										required: ["__typename", "id", "updated_at"],
+										required: ["__typename", "id", "name", "updated_at"],
 									},
 								},
 								additionalProperties: false,
-								required: ["__typename", "id", "updated_at"],
+								required: ["__typename", "id", "title", "isbn", "updated_at"],
 							},
 						},
 					},
@@ -794,12 +1029,12 @@ const jsonSchema: Schema = {
 												updated_at: { type: "string" },
 											},
 											additionalProperties: false,
-											required: ["__typename", "id", "updated_at"],
+											required: ["__typename", "id", "title", "isbn", "updated_at"],
 										},
 									},
 								},
 								additionalProperties: false,
-								required: ["__typename", "id", "updated_at", "books"],
+								required: ["__typename", "id", "name", "updated_at", "books"],
 							},
 						},
 					},
@@ -843,11 +1078,11 @@ const jsonSchema: Schema = {
 											updated_at: { type: "string" },
 										},
 										additionalProperties: false,
-										required: ["__typename", "id", "updated_at"],
+										required: ["__typename", "id", "name", "updated_at"],
 									},
 								},
 								additionalProperties: false,
-								required: ["__typename", "id", "updated_at"],
+								required: ["__typename", "id", "title", "isbn", "updated_at"],
 							},
 						},
 					},
@@ -949,26 +1184,216 @@ const jsonSchema: Schema = {
 			additionalProperties: false,
 		},
 	},
-	UpsertCrdt: {
+	UpsertClient: {
 		input: {
 			type: "object",
-			properties: { crdt: { $ref: "#/definitions/hasura_crdt_insert_input" } },
+			properties: { client: { $ref: "#/definitions/hasura_clients_insert_input" } },
 			additionalProperties: false,
 			definitions: {
+				hasura_clients_insert_input: {
+					additionalProperties: false,
+					type: "object",
+					properties: {
+						client: { type: ["string", "null"] },
+						crdt: { $ref: "#/definitions/hasura_crdt_obj_rel_insert_input" },
+						crdt_id: { type: ["string", "null"] },
+						created_at: { type: ["string", "null"] },
+						guid: { type: ["string", "null"] },
+						id: { type: ["string", "null"] },
+						updated_at: { type: ["string", "null"] },
+						vector: { type: ["string", "null"] },
+					},
+				},
+				hasura_crdt_obj_rel_insert_input: {
+					additionalProperties: false,
+					type: ["object", "null"],
+					properties: {
+						data: { $ref: "#/definitions/hasura_crdt_insert_input" },
+						on_conflict: { $ref: "#/definitions/hasura_crdt_on_conflict" },
+					},
+				},
 				hasura_crdt_insert_input: {
 					additionalProperties: false,
 					type: "object",
 					properties: {
 						client: { type: ["string", "null"] },
+						clients: { $ref: "#/definitions/hasura_clients_arr_rel_insert_input" },
 						created_at: { type: ["string", "null"] },
+						guid: { type: ["string", "null"] },
 						id: { type: ["string", "null"] },
+						room: { type: ["string", "null"] },
 						state: { type: ["string", "null"] },
 						updated_at: { type: ["string", "null"] },
 						vector: { type: ["string", "null"] },
 					},
 				},
+				hasura_clients_arr_rel_insert_input: {
+					additionalProperties: false,
+					type: ["object", "null"],
+					properties: {
+						data: { type: "array", minItems: 1, items: { $ref: "#/definitions/hasura_clients_insert_input" } },
+						on_conflict: { $ref: "#/definitions/hasura_clients_on_conflict" },
+					},
+				},
+				hasura_clients_on_conflict: {
+					additionalProperties: false,
+					type: ["object", "null"],
+					properties: {
+						constraint: { type: "string", enum: ["clients_client_unique", "clients_pkey"] },
+						update_columns: {
+							type: ["array", "null"],
+							items: {
+								type: "string",
+								enum: ["client", "crdt_id", "created_at", "guid", "id", "updated_at", "vector"],
+							},
+						},
+						where: { $ref: "#/definitions/hasura_clients_bool_exp" },
+					},
+				},
+				hasura_clients_bool_exp: {
+					additionalProperties: false,
+					type: ["object", "null"],
+					properties: {
+						_and: { type: ["array", "null"], items: { $ref: "#/definitions/hasura_clients_bool_exp" } },
+						_not: { $ref: "#/definitions/hasura_clients_bool_exp" },
+						_or: { type: ["array", "null"], items: { $ref: "#/definitions/hasura_clients_bool_exp" } },
+						client: { $ref: "#/definitions/hasura_String_comparison_exp" },
+						crdt: { $ref: "#/definitions/hasura_crdt_bool_exp" },
+						crdt_id: { $ref: "#/definitions/hasura_String_comparison_exp" },
+						created_at: { $ref: "#/definitions/hasura_timestamptz_comparison_exp" },
+						guid: { $ref: "#/definitions/hasura_uuid_comparison_exp" },
+						id: { $ref: "#/definitions/hasura_String_comparison_exp" },
+						updated_at: { $ref: "#/definitions/hasura_timestamptz_comparison_exp" },
+						vector: { $ref: "#/definitions/hasura_String_comparison_exp" },
+					},
+				},
+				hasura_String_comparison_exp: {
+					additionalProperties: false,
+					type: ["object", "null"],
+					properties: {
+						_eq: { type: ["string", "null"] },
+						_gt: { type: ["string", "null"] },
+						_gte: { type: ["string", "null"] },
+						_ilike: { type: ["string", "null"] },
+						_in: { type: ["array", "null"], items: { type: "string" } },
+						_iregex: { type: ["string", "null"] },
+						_is_null: { type: ["boolean", "null"] },
+						_like: { type: ["string", "null"] },
+						_lt: { type: ["string", "null"] },
+						_lte: { type: ["string", "null"] },
+						_neq: { type: ["string", "null"] },
+						_nilike: { type: ["string", "null"] },
+						_nin: { type: ["array", "null"], items: { type: "string" } },
+						_niregex: { type: ["string", "null"] },
+						_nlike: { type: ["string", "null"] },
+						_nregex: { type: ["string", "null"] },
+						_nsimilar: { type: ["string", "null"] },
+						_regex: { type: ["string", "null"] },
+						_similar: { type: ["string", "null"] },
+					},
+				},
+				hasura_crdt_bool_exp: {
+					additionalProperties: false,
+					type: ["object", "null"],
+					properties: {
+						_and: { type: ["array", "null"], items: { $ref: "#/definitions/hasura_crdt_bool_exp" } },
+						_not: { $ref: "#/definitions/hasura_crdt_bool_exp" },
+						_or: { type: ["array", "null"], items: { $ref: "#/definitions/hasura_crdt_bool_exp" } },
+						client: { $ref: "#/definitions/hasura_String_comparison_exp" },
+						clients: { $ref: "#/definitions/hasura_clients_bool_exp" },
+						clients_aggregate: { $ref: "#/definitions/hasura_clients_aggregate_bool_exp" },
+						created_at: { $ref: "#/definitions/hasura_timestamptz_comparison_exp" },
+						guid: { $ref: "#/definitions/hasura_uuid_comparison_exp" },
+						id: { $ref: "#/definitions/hasura_String_comparison_exp" },
+						room: { $ref: "#/definitions/hasura_String_comparison_exp" },
+						state: { $ref: "#/definitions/hasura_String_comparison_exp" },
+						updated_at: { $ref: "#/definitions/hasura_timestamptz_comparison_exp" },
+						vector: { $ref: "#/definitions/hasura_String_comparison_exp" },
+					},
+				},
+				hasura_clients_aggregate_bool_exp: {
+					additionalProperties: false,
+					type: ["object", "null"],
+					properties: { count: { $ref: "#/definitions/hasura_clients_aggregate_bool_exp_count" } },
+				},
+				hasura_clients_aggregate_bool_exp_count: {
+					additionalProperties: false,
+					type: ["object", "null"],
+					properties: {
+						arguments: {
+							type: ["array", "null"],
+							items: {
+								type: "string",
+								enum: ["client", "crdt_id", "created_at", "guid", "id", "updated_at", "vector"],
+							},
+						},
+						distinct: { type: ["boolean", "null"] },
+						filter: { $ref: "#/definitions/hasura_clients_bool_exp" },
+						predicate: { $ref: "#/definitions/hasura_Int_comparison_exp" },
+					},
+				},
+				hasura_Int_comparison_exp: {
+					additionalProperties: false,
+					type: "object",
+					properties: {
+						_eq: { type: ["integer", "null"] },
+						_gt: { type: ["integer", "null"] },
+						_gte: { type: ["integer", "null"] },
+						_in: { type: ["array", "null"], items: { type: "integer" } },
+						_is_null: { type: ["boolean", "null"] },
+						_lt: { type: ["integer", "null"] },
+						_lte: { type: ["integer", "null"] },
+						_neq: { type: ["integer", "null"] },
+						_nin: { type: ["array", "null"], items: { type: "integer" } },
+					},
+				},
+				hasura_timestamptz_comparison_exp: {
+					additionalProperties: false,
+					type: ["object", "null"],
+					properties: {
+						_eq: { type: ["string", "null"] },
+						_gt: { type: ["string", "null"] },
+						_gte: { type: ["string", "null"] },
+						_in: { type: ["array", "null"], items: { type: "string" } },
+						_is_null: { type: ["boolean", "null"] },
+						_lt: { type: ["string", "null"] },
+						_lte: { type: ["string", "null"] },
+						_neq: { type: ["string", "null"] },
+						_nin: { type: ["array", "null"], items: { type: "string" } },
+					},
+				},
+				hasura_uuid_comparison_exp: {
+					additionalProperties: false,
+					type: ["object", "null"],
+					properties: {
+						_eq: { type: ["string", "null"] },
+						_gt: { type: ["string", "null"] },
+						_gte: { type: ["string", "null"] },
+						_in: { type: ["array", "null"], items: { type: "string" } },
+						_is_null: { type: ["boolean", "null"] },
+						_lt: { type: ["string", "null"] },
+						_lte: { type: ["string", "null"] },
+						_neq: { type: ["string", "null"] },
+						_nin: { type: ["array", "null"], items: { type: "string" } },
+					},
+				},
+				hasura_crdt_on_conflict: {
+					additionalProperties: false,
+					type: ["object", "null"],
+					properties: {
+						constraint: { type: "string", enum: ["crdt_client_unique", "crdt_guid_unique", "crdt_pkey"] },
+						update_columns: {
+							type: ["array", "null"],
+							items: {
+								type: "string",
+								enum: ["client", "created_at", "guid", "id", "room", "state", "updated_at", "vector"],
+							},
+						},
+						where: { $ref: "#/definitions/hasura_crdt_bool_exp" },
+					},
+				},
 			},
-			required: ["crdt"],
+			required: ["client"],
 		},
 		response: {
 			type: "object",
@@ -976,11 +1401,68 @@ const jsonSchema: Schema = {
 				data: {
 					type: "object",
 					properties: {
-						hasura_insert_crdt_one: {
+						hasura_insert_clients_one: {
 							type: "object",
-							properties: { id: { type: "string" } },
+							properties: {
+								__typename: { type: "string", enum: ["hasura_clients"] },
+								id: { type: "string" },
+								guid: { type: "string" },
+								client: { type: "string" },
+							},
 							additionalProperties: false,
-							required: ["id"],
+							required: ["__typename", "id", "guid", "client"],
+						},
+					},
+					additionalProperties: false,
+				},
+			},
+			additionalProperties: false,
+		},
+	},
+	UpsertCrdt: {
+		input: {
+			type: "object",
+			properties: { client: { type: "string" }, crdt: { $ref: "#/definitions/hasura_crdt_set_input" } },
+			additionalProperties: false,
+			definitions: {
+				hasura_crdt_set_input: {
+					additionalProperties: false,
+					type: "object",
+					properties: {
+						client: { type: ["string", "null"] },
+						created_at: { type: ["string", "null"] },
+						guid: { type: ["string", "null"] },
+						id: { type: ["string", "null"] },
+						room: { type: ["string", "null"] },
+						state: { type: ["string", "null"] },
+						updated_at: { type: ["string", "null"] },
+						vector: { type: ["string", "null"] },
+					},
+				},
+			},
+			required: ["client", "crdt"],
+		},
+		response: {
+			type: "object",
+			properties: {
+				data: {
+					type: "object",
+					properties: {
+						hasura_update_crdt: {
+							type: "object",
+							properties: {
+								returning: {
+									type: "array",
+									items: {
+										type: "object",
+										properties: { id: { type: "string" } },
+										additionalProperties: false,
+										required: ["id"],
+									},
+								},
+							},
+							additionalProperties: false,
+							required: ["returning"],
 						},
 					},
 					additionalProperties: false,

@@ -45,10 +45,64 @@
                 {
                   "disabled": true,
                   "description": {
-                    "content": "Type boolean, Optional",
+                    "content": "Type string, Optional",
                     "type": "text/plain"
                   },
-                  "key": "initialSync",
+                  "key": "clientId",
+                  "value": ""
+                },
+                {
+                  "disabled": true,
+                  "description": {
+                    "content": "Type string, Optional",
+                    "type": "text/plain"
+                  },
+                  "key": "guid",
+                  "value": ""
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [],
+          "event": []
+        },
+        {
+          "id": "QueryClient",
+          "name": "QueryClient",
+          "request": {
+            "url": {
+              "path": [
+                "operations",
+                "QueryClient"
+              ],
+              "host": [
+                "{{apiBaseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": true,
+                  "description": {
+                    "content": "Type string, Optional",
+                    "type": "text/plain"
+                  },
+                  "key": "client",
+                  "value": ""
+                },
+                {
+                  "disabled": true,
+                  "description": {
+                    "content": "Type string, Optional",
+                    "type": "text/plain"
+                  },
+                  "key": "room",
                   "value": ""
                 }
               ],
@@ -84,7 +138,7 @@
                     "content": "Type string, Optional",
                     "type": "text/plain"
                   },
-                  "key": "client",
+                  "key": "room",
                   "value": ""
                 }
               ],
@@ -528,6 +582,30 @@
           "event": []
         },
         {
+          "id": "UpsertClient",
+          "name": "UpsertClient",
+          "request": {
+            "url": {
+              "path": [
+                "operations",
+                "UpsertClient"
+              ],
+              "host": [
+                "{{apiBaseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "POST",
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": []
+            }
+          },
+          "response": [],
+          "event": []
+        },
+        {
           "id": "UpsertCrdt",
           "name": "UpsertCrdt",
           "request": {
@@ -545,7 +623,17 @@
             "method": "POST",
             "body": {
               "mode": "urlencoded",
-              "urlencoded": []
+              "urlencoded": [
+                {
+                  "disabled": true,
+                  "description": {
+                    "content": "Type string, Optional",
+                    "type": "text/plain"
+                  },
+                  "key": "client",
+                  "value": ""
+                }
+              ]
             }
           },
           "response": [],

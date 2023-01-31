@@ -10,10 +10,12 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "@frameable/pigeon": "^1.4.3",
         "@wundergraph/sdk": "^0.132.1",
         "cross-env": "^7.0.3",
         "graphql": "^16.6.0",
         "js-base64": "^3.7.4",
+        "lodash": "^4.17.21",
         "postgres-bytea": "^3.0.0",
         "y-pojo": "^0.0.8",
         "y-utility": "^0.1.2",

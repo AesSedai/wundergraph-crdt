@@ -8,6 +8,8 @@ import { CrdtAuthorsResponse, CrdtAuthorsResponseData } from "../../graphql/mode
 export type InitialState = {
     doc: Y.Doc
     response: CrdtAuthorsResponse
+    clientID: number
+    guid: string
     sv: string
     error: GraphQLResponseError | undefined
     lastTransferred: number
@@ -17,6 +19,8 @@ export type InitialState = {
 export type PersistState = {
     encodeState: string
     response: CrdtAuthorsResponse
+    clientID: number
+    guid: string
     sv: string
     error: GraphQLResponseError | undefined
     lastTransferred: number
@@ -27,12 +31,16 @@ const initialState: InitialState = {
     doc: new Y.Doc(),
     response: { data: { hasura_authors: [] } },
     sv: "",
+    clientID: -1,
+    guid: "",
     error: undefined,
     lastTransferred: 0,
     transferred: 0
 }
 
 initialState.sv = fromUint8Array(Y.encodeStateVector(initialState.doc))
+initialState.guid = initialState.doc.guid
+initialState.clientID = initialState.doc.clientID
 
 // not used, but required to set up root types on the Ydoc
 const ymap1 = initialState.doc.getMap("data")

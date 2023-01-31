@@ -29,6 +29,7 @@ export interface OperationsConfiguration {
 		CreateBook?: CustomizeMutation;
 		CreateCrdt?: CustomizeMutation;
 		DeleteBook?: CustomizeMutation;
+		QueryClient?: CustomizeQuery;
 		QueryCrdt?: CustomizeQuery;
 		QueryGetAuthors?: CustomizeQuery;
 		QueryGetBooks?: CustomizeQuery;
@@ -39,6 +40,7 @@ export interface OperationsConfiguration {
 		UpdateAuthorName?: CustomizeMutation;
 		UpdateBook?: CustomizeMutation;
 		UpdateCrdt?: CustomizeMutation;
+		UpsertClient?: CustomizeMutation;
 		UpsertCrdt?: CustomizeMutation;
 	};
 }

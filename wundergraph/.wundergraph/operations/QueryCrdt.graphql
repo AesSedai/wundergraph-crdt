@@ -1,11 +1,10 @@
-query ($client: String!) {
-    hasura_crdt(where: { client: { _eq: $client } }) {
+query ($room: String!) {
+    hasura_crdt(where: { room: { _eq: $room } }) {
         id
         __typename
         client
+        guid
         state
         vector
-        created_at
-        updated_at
     }
 }

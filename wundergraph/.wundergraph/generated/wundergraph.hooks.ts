@@ -18,6 +18,7 @@ import {
 	InjectedCreateBookInput,
 	InjectedCreateCrdtInput,
 	InjectedDeleteBookInput,
+	InjectedQueryClientInput,
 	InjectedQueryCrdtInput,
 	InjectedQueryGetAuthorsInput,
 	InjectedQueryGetBooksInput,
@@ -27,7 +28,9 @@ import {
 	InjectedUpdateAuthorNameInput,
 	InjectedUpdateBookInput,
 	InjectedUpdateCrdtInput,
+	InjectedUpsertClientInput,
 	InjectedUpsertCrdtInput,
+	QueryClientResponse,
 	QueryCrdtResponse,
 	QueryGetAuthorsResponse,
 	QueryGetBooksResponse,
@@ -38,6 +41,7 @@ import {
 	UpdateAuthorNameResponse,
 	UpdateBookResponse,
 	UpdateCrdtResponse,
+	UpsertClientResponse,
 	UpsertCrdtResponse,
 } from "./models";
 import type { InternalClient } from "./wundergraph.internal.client";
@@ -55,6 +59,7 @@ export type WUNDERGRAPH_OPERATION =
 	| "CreateBook"
 	| "CreateCrdt"
 	| "DeleteBook"
+	| "QueryClient"
 	| "QueryCrdt"
 	| "QueryGetAuthors"
 	| "QueryGetBooks"
@@ -65,6 +70,7 @@ export type WUNDERGRAPH_OPERATION =
 	| "UpdateAuthorName"
 	| "UpdateBook"
 	| "UpdateCrdt"
+	| "UpsertClient"
 	| "UpsertCrdt";
 
 export type DATA_SOURCES = never;
@@ -166,6 +172,18 @@ export interface HooksConfig
 }
 
 export interface Queries {
+	QueryClient?: {
+		mockResolve?: (hook: HookRequestWithInput<InjectedQueryClientInput>) => Promise<QueryClientResponse>;
+		preResolve?: (hook: HookRequestWithInput<InjectedQueryClientInput>) => Promise<void>;
+		mutatingPreResolve?: (hook: HookRequestWithInput<InjectedQueryClientInput>) => Promise<InjectedQueryClientInput>;
+		postResolve?: (
+			hook: HookRequestWithInput<InjectedQueryClientInput> & HookRequestWithResponse<QueryClientResponse>
+		) => Promise<void>;
+		customResolve?: (hook: HookRequestWithInput<InjectedQueryClientInput>) => Promise<void | QueryClientResponse>;
+		mutatingPostResolve?: (
+			hook: HookRequestWithInput<InjectedQueryClientInput> & HookRequestWithResponse<QueryClientResponse>
+		) => Promise<QueryClientResponse>;
+	};
 	QueryCrdt?: {
 		mockResolve?: (hook: HookRequestWithInput<InjectedQueryCrdtInput>) => Promise<QueryCrdtResponse>;
 		preResolve?: (hook: HookRequestWithInput<InjectedQueryCrdtInput>) => Promise<void>;
@@ -308,6 +326,18 @@ export interface Mutations {
 		mutatingPostResolve?: (
 			hook: HookRequestWithInput<InjectedUpdateCrdtInput> & HookRequestWithResponse<UpdateCrdtResponse>
 		) => Promise<UpdateCrdtResponse>;
+	};
+	UpsertClient?: {
+		mockResolve?: (hook: HookRequestWithInput<InjectedUpsertClientInput>) => Promise<UpsertClientResponse>;
+		preResolve?: (hook: HookRequestWithInput<InjectedUpsertClientInput>) => Promise<void>;
+		mutatingPreResolve?: (hook: HookRequestWithInput<InjectedUpsertClientInput>) => Promise<InjectedUpsertClientInput>;
+		postResolve?: (
+			hook: HookRequestWithInput<InjectedUpsertClientInput> & HookRequestWithResponse<UpsertClientResponse>
+		) => Promise<void>;
+		customResolve?: (hook: HookRequestWithInput<InjectedUpsertClientInput>) => Promise<void | UpsertClientResponse>;
+		mutatingPostResolve?: (
+			hook: HookRequestWithInput<InjectedUpsertClientInput> & HookRequestWithResponse<UpsertClientResponse>
+		) => Promise<UpsertClientResponse>;
 	};
 	UpsertCrdt?: {
 		mockResolve?: (hook: HookRequestWithInput<InjectedUpsertCrdtInput>) => Promise<UpsertCrdtResponse>;

@@ -352,7 +352,7 @@ type hasura_authors {
   ): hasura_books_aggregate!
   created_at: hasura_timestamptz!
   id: String!
-  name: String
+  name: String!
   updated_at: hasura_timestamptz!
   _join: Query!
 }
@@ -544,9 +544,9 @@ type hasura_books {
   author_id: String
   created_at: hasura_timestamptz!
   id: String!
-  isbn: String
-  published_at: hasura_timestamptz
-  title: String
+  isbn: String!
+  published_at: hasura_timestamptz!
+  title: String!
   updated_at: hasura_timestamptz!
   _join: Query!
 }
@@ -808,15 +808,319 @@ input hasura_books_updates {
 }
 
 """
+columns and relationships of "clients"
+"""
+type hasura_clients {
+  client: String!
+  """An object relationship"""
+  crdt: hasura_crdt
+  crdt_id: String
+  created_at: hasura_timestamptz!
+  guid: hasura_uuid!
+  id: String!
+  updated_at: hasura_timestamptz!
+  vector: String!
+  _join: Query!
+}
+
+"""
+aggregated selection of "clients"
+"""
+type hasura_clients_aggregate {
+  aggregate: hasura_clients_aggregate_fields
+  nodes: [hasura_clients!]!
+  _join: Query!
+}
+
+input hasura_clients_aggregate_bool_exp {
+  count: hasura_clients_aggregate_bool_exp_count
+}
+
+input hasura_clients_aggregate_bool_exp_count {
+  arguments: [hasura_clients_select_column!]
+  distinct: Boolean
+  filter: hasura_clients_bool_exp
+  predicate: hasura_Int_comparison_exp!
+}
+
+"""
+aggregate fields of "clients"
+"""
+type hasura_clients_aggregate_fields {
+  count(columns: [hasura_clients_select_column!], distinct: Boolean): Int!
+  max: hasura_clients_max_fields
+  min: hasura_clients_min_fields
+  _join: Query!
+}
+
+"""
+order by aggregate values of table "clients"
+"""
+input hasura_clients_aggregate_order_by {
+  count: hasura_order_by
+  max: hasura_clients_max_order_by
+  min: hasura_clients_min_order_by
+}
+
+"""
+input type for inserting array relation for remote table "clients"
+"""
+input hasura_clients_arr_rel_insert_input {
+  data: [hasura_clients_insert_input!]!
+  """upsert condition"""
+  on_conflict: hasura_clients_on_conflict
+}
+
+"""
+Boolean expression to filter rows from the table "clients". All fields are combined with a logical 'AND'.
+"""
+input hasura_clients_bool_exp {
+  _and: [hasura_clients_bool_exp!]
+  _not: hasura_clients_bool_exp
+  _or: [hasura_clients_bool_exp!]
+  client: hasura_String_comparison_exp
+  crdt: hasura_crdt_bool_exp
+  crdt_id: hasura_String_comparison_exp
+  created_at: hasura_timestamptz_comparison_exp
+  guid: hasura_uuid_comparison_exp
+  id: hasura_String_comparison_exp
+  updated_at: hasura_timestamptz_comparison_exp
+  vector: hasura_String_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "clients"
+"""
+enum hasura_clients_constraint {
+  """
+  unique or primary key constraint on columns "client"
+  """
+  clients_client_unique
+  """
+  unique or primary key constraint on columns "id"
+  """
+  clients_pkey
+}
+
+"""
+input type for inserting data into table "clients"
+"""
+input hasura_clients_insert_input {
+  client: String
+  crdt: hasura_crdt_obj_rel_insert_input
+  crdt_id: String
+  created_at: hasura_timestamptz
+  guid: hasura_uuid
+  id: String
+  updated_at: hasura_timestamptz
+  vector: String
+}
+
+"""aggregate max on columns"""
+type hasura_clients_max_fields {
+  client: String
+  crdt_id: String
+  created_at: hasura_timestamptz
+  guid: hasura_uuid
+  id: String
+  updated_at: hasura_timestamptz
+  vector: String
+  _join: Query!
+}
+
+"""
+order by max() on columns of table "clients"
+"""
+input hasura_clients_max_order_by {
+  client: hasura_order_by
+  crdt_id: hasura_order_by
+  created_at: hasura_order_by
+  guid: hasura_order_by
+  id: hasura_order_by
+  updated_at: hasura_order_by
+  vector: hasura_order_by
+}
+
+"""aggregate min on columns"""
+type hasura_clients_min_fields {
+  client: String
+  crdt_id: String
+  created_at: hasura_timestamptz
+  guid: hasura_uuid
+  id: String
+  updated_at: hasura_timestamptz
+  vector: String
+  _join: Query!
+}
+
+"""
+order by min() on columns of table "clients"
+"""
+input hasura_clients_min_order_by {
+  client: hasura_order_by
+  crdt_id: hasura_order_by
+  created_at: hasura_order_by
+  guid: hasura_order_by
+  id: hasura_order_by
+  updated_at: hasura_order_by
+  vector: hasura_order_by
+}
+
+"""
+response of any mutation on the table "clients"
+"""
+type hasura_clients_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+  """data from the rows affected by the mutation"""
+  returning: [hasura_clients!]!
+  _join: Query!
+}
+
+"""
+on_conflict condition type for table "clients"
+"""
+input hasura_clients_on_conflict {
+  constraint: hasura_clients_constraint!
+  update_columns: [hasura_clients_update_column!]! = []
+  where: hasura_clients_bool_exp
+}
+
+"""Ordering options when selecting data from "clients"."""
+input hasura_clients_order_by {
+  client: hasura_order_by
+  crdt: hasura_crdt_order_by
+  crdt_id: hasura_order_by
+  created_at: hasura_order_by
+  guid: hasura_order_by
+  id: hasura_order_by
+  updated_at: hasura_order_by
+  vector: hasura_order_by
+}
+
+"""primary key columns input for table: clients"""
+input hasura_clients_pk_columns_input {
+  id: String!
+}
+
+"""
+select columns of table "clients"
+"""
+enum hasura_clients_select_column {
+  """column name"""
+  client
+  """column name"""
+  crdt_id
+  """column name"""
+  created_at
+  """column name"""
+  guid
+  """column name"""
+  id
+  """column name"""
+  updated_at
+  """column name"""
+  vector
+}
+
+"""
+input type for updating data in table "clients"
+"""
+input hasura_clients_set_input {
+  client: String
+  crdt_id: String
+  created_at: hasura_timestamptz
+  guid: hasura_uuid
+  id: String
+  updated_at: hasura_timestamptz
+  vector: String
+}
+
+"""
+Streaming cursor of the table "clients"
+"""
+input hasura_clients_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: hasura_clients_stream_cursor_value_input!
+  """cursor ordering"""
+  ordering: hasura_cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input hasura_clients_stream_cursor_value_input {
+  client: String
+  crdt_id: String
+  created_at: hasura_timestamptz
+  guid: hasura_uuid
+  id: String
+  updated_at: hasura_timestamptz
+  vector: String
+}
+
+"""
+update columns of table "clients"
+"""
+enum hasura_clients_update_column {
+  """column name"""
+  client
+  """column name"""
+  crdt_id
+  """column name"""
+  created_at
+  """column name"""
+  guid
+  """column name"""
+  id
+  """column name"""
+  updated_at
+  """column name"""
+  vector
+}
+
+input hasura_clients_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: hasura_clients_set_input
+  where: hasura_clients_bool_exp!
+}
+
+"""
 columns and relationships of "crdt"
 """
 type hasura_crdt {
-  client: String
+  client: String!
+  """An array relationship"""
+  clients(
+    """distinct select on columns"""
+    distinct_on: [hasura_clients_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [hasura_clients_order_by!]
+    """filter the rows returned"""
+    where: hasura_clients_bool_exp
+  ): [hasura_clients!]!
+  """An aggregate relationship"""
+  clients_aggregate(
+    """distinct select on columns"""
+    distinct_on: [hasura_clients_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [hasura_clients_order_by!]
+    """filter the rows returned"""
+    where: hasura_clients_bool_exp
+  ): hasura_clients_aggregate!
   created_at: hasura_timestamptz!
+  guid: hasura_uuid!
   id: String!
-  state: String
+  room: String!
+  state: String!
   updated_at: hasura_timestamptz!
-  vector: String
+  vector: String!
   _join: Query!
 }
 
@@ -847,8 +1151,12 @@ input hasura_crdt_bool_exp {
   _not: hasura_crdt_bool_exp
   _or: [hasura_crdt_bool_exp!]
   client: hasura_String_comparison_exp
+  clients: hasura_clients_bool_exp
+  clients_aggregate: hasura_clients_aggregate_bool_exp
   created_at: hasura_timestamptz_comparison_exp
+  guid: hasura_uuid_comparison_exp
   id: hasura_String_comparison_exp
+  room: hasura_String_comparison_exp
   state: hasura_String_comparison_exp
   updated_at: hasura_timestamptz_comparison_exp
   vector: hasura_String_comparison_exp
@@ -863,6 +1171,10 @@ enum hasura_crdt_constraint {
   """
   crdt_client_unique
   """
+  unique or primary key constraint on columns "guid"
+  """
+  crdt_guid_unique
+  """
   unique or primary key constraint on columns "id"
   """
   crdt_pkey
@@ -873,8 +1185,11 @@ input type for inserting data into table "crdt"
 """
 input hasura_crdt_insert_input {
   client: String
+  clients: hasura_clients_arr_rel_insert_input
   created_at: hasura_timestamptz
+  guid: hasura_uuid
   id: String
+  room: String
   state: String
   updated_at: hasura_timestamptz
   vector: String
@@ -884,7 +1199,9 @@ input hasura_crdt_insert_input {
 type hasura_crdt_max_fields {
   client: String
   created_at: hasura_timestamptz
+  guid: hasura_uuid
   id: String
+  room: String
   state: String
   updated_at: hasura_timestamptz
   vector: String
@@ -895,7 +1212,9 @@ type hasura_crdt_max_fields {
 type hasura_crdt_min_fields {
   client: String
   created_at: hasura_timestamptz
+  guid: hasura_uuid
   id: String
+  room: String
   state: String
   updated_at: hasura_timestamptz
   vector: String
@@ -914,6 +1233,15 @@ type hasura_crdt_mutation_response {
 }
 
 """
+input type for inserting object relation for remote table "crdt"
+"""
+input hasura_crdt_obj_rel_insert_input {
+  data: hasura_crdt_insert_input!
+  """upsert condition"""
+  on_conflict: hasura_crdt_on_conflict
+}
+
+"""
 on_conflict condition type for table "crdt"
 """
 input hasura_crdt_on_conflict {
@@ -925,8 +1253,11 @@ input hasura_crdt_on_conflict {
 """Ordering options when selecting data from "crdt"."""
 input hasura_crdt_order_by {
   client: hasura_order_by
+  clients_aggregate: hasura_clients_aggregate_order_by
   created_at: hasura_order_by
+  guid: hasura_order_by
   id: hasura_order_by
+  room: hasura_order_by
   state: hasura_order_by
   updated_at: hasura_order_by
   vector: hasura_order_by
@@ -946,7 +1277,11 @@ enum hasura_crdt_select_column {
   """column name"""
   created_at
   """column name"""
+  guid
+  """column name"""
   id
+  """column name"""
+  room
   """column name"""
   state
   """column name"""
@@ -961,7 +1296,9 @@ input type for updating data in table "crdt"
 input hasura_crdt_set_input {
   client: String
   created_at: hasura_timestamptz
+  guid: hasura_uuid
   id: String
+  room: String
   state: String
   updated_at: hasura_timestamptz
   vector: String
@@ -981,7 +1318,9 @@ input hasura_crdt_stream_cursor_input {
 input hasura_crdt_stream_cursor_value_input {
   client: String
   created_at: hasura_timestamptz
+  guid: hasura_uuid
   id: String
+  room: String
   state: String
   updated_at: hasura_timestamptz
   vector: String
@@ -996,7 +1335,11 @@ enum hasura_crdt_update_column {
   """column name"""
   created_at
   """column name"""
+  guid
+  """column name"""
   id
+  """column name"""
+  room
   """column name"""
   state
   """column name"""
@@ -1017,6 +1360,256 @@ enum hasura_cursor_ordering {
   ASC
   """descending ordering of the cursor"""
   DESC
+}
+
+"""
+columns and relationships of "knex_migrations"
+"""
+type hasura_knex_migrations {
+  batch: Int
+  id: Int!
+  migration_time: hasura_timestamptz
+  name: String
+  _join: Query!
+}
+
+"""
+aggregated selection of "knex_migrations"
+"""
+type hasura_knex_migrations_aggregate {
+  aggregate: hasura_knex_migrations_aggregate_fields
+  nodes: [hasura_knex_migrations!]!
+  _join: Query!
+}
+
+"""
+aggregate fields of "knex_migrations"
+"""
+type hasura_knex_migrations_aggregate_fields {
+  avg: hasura_knex_migrations_avg_fields
+  count(columns: [hasura_knex_migrations_select_column!], distinct: Boolean): Int!
+  max: hasura_knex_migrations_max_fields
+  min: hasura_knex_migrations_min_fields
+  stddev: hasura_knex_migrations_stddev_fields
+  stddev_pop: hasura_knex_migrations_stddev_pop_fields
+  stddev_samp: hasura_knex_migrations_stddev_samp_fields
+  sum: hasura_knex_migrations_sum_fields
+  var_pop: hasura_knex_migrations_var_pop_fields
+  var_samp: hasura_knex_migrations_var_samp_fields
+  variance: hasura_knex_migrations_variance_fields
+  _join: Query!
+}
+
+"""aggregate avg on columns"""
+type hasura_knex_migrations_avg_fields {
+  batch: Float
+  id: Float
+  _join: Query!
+}
+
+"""
+Boolean expression to filter rows from the table "knex_migrations". All fields are combined with a logical 'AND'.
+"""
+input hasura_knex_migrations_bool_exp {
+  _and: [hasura_knex_migrations_bool_exp!]
+  _not: hasura_knex_migrations_bool_exp
+  _or: [hasura_knex_migrations_bool_exp!]
+  batch: hasura_Int_comparison_exp
+  id: hasura_Int_comparison_exp
+  migration_time: hasura_timestamptz_comparison_exp
+  name: hasura_String_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "knex_migrations"
+"""
+enum hasura_knex_migrations_constraint {
+  """
+  unique or primary key constraint on columns "id"
+  """
+  knex_migrations_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "knex_migrations"
+"""
+input hasura_knex_migrations_inc_input {
+  batch: Int
+  id: Int
+}
+
+"""
+input type for inserting data into table "knex_migrations"
+"""
+input hasura_knex_migrations_insert_input {
+  batch: Int
+  id: Int
+  migration_time: hasura_timestamptz
+  name: String
+}
+
+"""aggregate max on columns"""
+type hasura_knex_migrations_max_fields {
+  batch: Int
+  id: Int
+  migration_time: hasura_timestamptz
+  name: String
+  _join: Query!
+}
+
+"""aggregate min on columns"""
+type hasura_knex_migrations_min_fields {
+  batch: Int
+  id: Int
+  migration_time: hasura_timestamptz
+  name: String
+  _join: Query!
+}
+
+"""
+response of any mutation on the table "knex_migrations"
+"""
+type hasura_knex_migrations_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+  """data from the rows affected by the mutation"""
+  returning: [hasura_knex_migrations!]!
+  _join: Query!
+}
+
+"""
+on_conflict condition type for table "knex_migrations"
+"""
+input hasura_knex_migrations_on_conflict {
+  constraint: hasura_knex_migrations_constraint!
+  update_columns: [hasura_knex_migrations_update_column!]! = []
+  where: hasura_knex_migrations_bool_exp
+}
+
+"""Ordering options when selecting data from "knex_migrations"."""
+input hasura_knex_migrations_order_by {
+  batch: hasura_order_by
+  id: hasura_order_by
+  migration_time: hasura_order_by
+  name: hasura_order_by
+}
+
+"""primary key columns input for table: knex_migrations"""
+input hasura_knex_migrations_pk_columns_input {
+  id: Int!
+}
+
+"""
+select columns of table "knex_migrations"
+"""
+enum hasura_knex_migrations_select_column {
+  """column name"""
+  batch
+  """column name"""
+  id
+  """column name"""
+  migration_time
+  """column name"""
+  name
+}
+
+"""
+input type for updating data in table "knex_migrations"
+"""
+input hasura_knex_migrations_set_input {
+  batch: Int
+  id: Int
+  migration_time: hasura_timestamptz
+  name: String
+}
+
+"""aggregate stddev on columns"""
+type hasura_knex_migrations_stddev_fields {
+  batch: Float
+  id: Float
+  _join: Query!
+}
+
+"""aggregate stddev_pop on columns"""
+type hasura_knex_migrations_stddev_pop_fields {
+  batch: Float
+  id: Float
+  _join: Query!
+}
+
+"""aggregate stddev_samp on columns"""
+type hasura_knex_migrations_stddev_samp_fields {
+  batch: Float
+  id: Float
+  _join: Query!
+}
+
+"""
+Streaming cursor of the table "knex_migrations"
+"""
+input hasura_knex_migrations_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: hasura_knex_migrations_stream_cursor_value_input!
+  """cursor ordering"""
+  ordering: hasura_cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input hasura_knex_migrations_stream_cursor_value_input {
+  batch: Int
+  id: Int
+  migration_time: hasura_timestamptz
+  name: String
+}
+
+"""aggregate sum on columns"""
+type hasura_knex_migrations_sum_fields {
+  batch: Int
+  id: Int
+  _join: Query!
+}
+
+"""
+update columns of table "knex_migrations"
+"""
+enum hasura_knex_migrations_update_column {
+  """column name"""
+  batch
+  """column name"""
+  id
+  """column name"""
+  migration_time
+  """column name"""
+  name
+}
+
+input hasura_knex_migrations_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: hasura_knex_migrations_inc_input
+  """sets the columns of the filtered rows to the given values"""
+  _set: hasura_knex_migrations_set_input
+  where: hasura_knex_migrations_bool_exp!
+}
+
+"""aggregate var_pop on columns"""
+type hasura_knex_migrations_var_pop_fields {
+  batch: Float
+  id: Float
+  _join: Query!
+}
+
+"""aggregate var_samp on columns"""
+type hasura_knex_migrations_var_samp_fields {
+  batch: Float
+  id: Float
+  _join: Query!
+}
+
+"""aggregate variance on columns"""
+type hasura_knex_migrations_variance_fields {
+  batch: Float
+  id: Float
+  _join: Query!
 }
 
 """mutation root"""
@@ -1044,6 +1637,17 @@ type Mutation {
   """
   hasura_delete_books_by_pk(id: String!): hasura_books
   """
+  delete data from the table: "clients"
+  """
+  hasura_delete_clients(
+    """filter the rows which have to be deleted"""
+    where: hasura_clients_bool_exp!
+  ): hasura_clients_mutation_response
+  """
+  delete single row from the table: "clients"
+  """
+  hasura_delete_clients_by_pk(id: String!): hasura_clients
+  """
   delete data from the table: "crdt"
   """
   hasura_delete_crdt(
@@ -1054,6 +1658,17 @@ type Mutation {
   delete single row from the table: "crdt"
   """
   hasura_delete_crdt_by_pk(id: String!): hasura_crdt
+  """
+  delete data from the table: "knex_migrations"
+  """
+  hasura_delete_knex_migrations(
+    """filter the rows which have to be deleted"""
+    where: hasura_knex_migrations_bool_exp!
+  ): hasura_knex_migrations_mutation_response
+  """
+  delete single row from the table: "knex_migrations"
+  """
+  hasura_delete_knex_migrations_by_pk(id: Int!): hasura_knex_migrations
   """
   insert data into the table: "authors"
   """
@@ -1091,6 +1706,24 @@ type Mutation {
     on_conflict: hasura_books_on_conflict
   ): hasura_books
   """
+  insert data into the table: "clients"
+  """
+  hasura_insert_clients(
+    """the rows to be inserted"""
+    objects: [hasura_clients_insert_input!]!
+    """upsert condition"""
+    on_conflict: hasura_clients_on_conflict
+  ): hasura_clients_mutation_response
+  """
+  insert a single row into the table: "clients"
+  """
+  hasura_insert_clients_one(
+    """the row to be inserted"""
+    object: hasura_clients_insert_input!
+    """upsert condition"""
+    on_conflict: hasura_clients_on_conflict
+  ): hasura_clients
+  """
   insert data into the table: "crdt"
   """
   hasura_insert_crdt(
@@ -1108,6 +1741,24 @@ type Mutation {
     """upsert condition"""
     on_conflict: hasura_crdt_on_conflict
   ): hasura_crdt
+  """
+  insert data into the table: "knex_migrations"
+  """
+  hasura_insert_knex_migrations(
+    """the rows to be inserted"""
+    objects: [hasura_knex_migrations_insert_input!]!
+    """upsert condition"""
+    on_conflict: hasura_knex_migrations_on_conflict
+  ): hasura_knex_migrations_mutation_response
+  """
+  insert a single row into the table: "knex_migrations"
+  """
+  hasura_insert_knex_migrations_one(
+    """the row to be inserted"""
+    object: hasura_knex_migrations_insert_input!
+    """upsert condition"""
+    on_conflict: hasura_knex_migrations_on_conflict
+  ): hasura_knex_migrations
   """
   update data of the table: "authors"
   """
@@ -1157,6 +1808,30 @@ type Mutation {
     updates: [hasura_books_updates!]!
   ): [hasura_books_mutation_response]
   """
+  update data of the table: "clients"
+  """
+  hasura_update_clients(
+    """sets the columns of the filtered rows to the given values"""
+    _set: hasura_clients_set_input
+    """filter the rows which have to be updated"""
+    where: hasura_clients_bool_exp!
+  ): hasura_clients_mutation_response
+  """
+  update single row of the table: "clients"
+  """
+  hasura_update_clients_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: hasura_clients_set_input
+    pk_columns: hasura_clients_pk_columns_input!
+  ): hasura_clients
+  """
+  update multiples rows of table: "clients"
+  """
+  hasura_update_clients_many(
+    """updates to execute, in order"""
+    updates: [hasura_clients_updates!]!
+  ): [hasura_clients_mutation_response]
+  """
   update data of the table: "crdt"
   """
   hasura_update_crdt(
@@ -1180,6 +1855,34 @@ type Mutation {
     """updates to execute, in order"""
     updates: [hasura_crdt_updates!]!
   ): [hasura_crdt_mutation_response]
+  """
+  update data of the table: "knex_migrations"
+  """
+  hasura_update_knex_migrations(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: hasura_knex_migrations_inc_input
+    """sets the columns of the filtered rows to the given values"""
+    _set: hasura_knex_migrations_set_input
+    """filter the rows which have to be updated"""
+    where: hasura_knex_migrations_bool_exp!
+  ): hasura_knex_migrations_mutation_response
+  """
+  update single row of the table: "knex_migrations"
+  """
+  hasura_update_knex_migrations_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: hasura_knex_migrations_inc_input
+    """sets the columns of the filtered rows to the given values"""
+    _set: hasura_knex_migrations_set_input
+    pk_columns: hasura_knex_migrations_pk_columns_input!
+  ): hasura_knex_migrations
+  """
+  update multiples rows of table: "knex_migrations"
+  """
+  hasura_update_knex_migrations_many(
+    """updates to execute, in order"""
+    updates: [hasura_knex_migrations_updates!]!
+  ): [hasura_knex_migrations_mutation_response]
 }
 
 """column ordering options"""
@@ -1259,6 +1962,34 @@ type Query {
   ): hasura_books_aggregate!
   """fetch data from the table: "books" using primary key columns"""
   hasura_books_by_pk(id: String!): hasura_books
+  """An array relationship"""
+  hasura_clients(
+    """distinct select on columns"""
+    distinct_on: [hasura_clients_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [hasura_clients_order_by!]
+    """filter the rows returned"""
+    where: hasura_clients_bool_exp
+  ): [hasura_clients!]!
+  """An aggregate relationship"""
+  hasura_clients_aggregate(
+    """distinct select on columns"""
+    distinct_on: [hasura_clients_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [hasura_clients_order_by!]
+    """filter the rows returned"""
+    where: hasura_clients_bool_exp
+  ): hasura_clients_aggregate!
+  """fetch data from the table: "clients" using primary key columns"""
+  hasura_clients_by_pk(id: String!): hasura_clients
   """
   fetch data from the table: "crdt"
   """
@@ -1291,6 +2022,38 @@ type Query {
   ): hasura_crdt_aggregate!
   """fetch data from the table: "crdt" using primary key columns"""
   hasura_crdt_by_pk(id: String!): hasura_crdt
+  """
+  fetch data from the table: "knex_migrations"
+  """
+  hasura_knex_migrations(
+    """distinct select on columns"""
+    distinct_on: [hasura_knex_migrations_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [hasura_knex_migrations_order_by!]
+    """filter the rows returned"""
+    where: hasura_knex_migrations_bool_exp
+  ): [hasura_knex_migrations!]!
+  """
+  fetch aggregated fields from the table: "knex_migrations"
+  """
+  hasura_knex_migrations_aggregate(
+    """distinct select on columns"""
+    distinct_on: [hasura_knex_migrations_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [hasura_knex_migrations_order_by!]
+    """filter the rows returned"""
+    where: hasura_knex_migrations_bool_exp
+  ): hasura_knex_migrations_aggregate!
+  """fetch data from the table: "knex_migrations" using primary key columns"""
+  hasura_knex_migrations_by_pk(id: Int!): hasura_knex_migrations
   public_hello: String
 }
 
@@ -1377,6 +2140,45 @@ type Subscription {
     """filter the rows returned"""
     where: hasura_books_bool_exp
   ): [hasura_books!]!
+  """An array relationship"""
+  hasura_clients(
+    """distinct select on columns"""
+    distinct_on: [hasura_clients_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [hasura_clients_order_by!]
+    """filter the rows returned"""
+    where: hasura_clients_bool_exp
+  ): [hasura_clients!]!
+  """An aggregate relationship"""
+  hasura_clients_aggregate(
+    """distinct select on columns"""
+    distinct_on: [hasura_clients_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [hasura_clients_order_by!]
+    """filter the rows returned"""
+    where: hasura_clients_bool_exp
+  ): hasura_clients_aggregate!
+  """fetch data from the table: "clients" using primary key columns"""
+  hasura_clients_by_pk(id: String!): hasura_clients
+  """
+  fetch data from the table in a streaming manner: "clients"
+  """
+  hasura_clients_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [hasura_clients_stream_cursor_input]!
+    """filter the rows returned"""
+    where: hasura_clients_bool_exp
+  ): [hasura_clients!]!
   """
   fetch data from the table: "crdt"
   """
@@ -1420,6 +2222,49 @@ type Subscription {
     """filter the rows returned"""
     where: hasura_crdt_bool_exp
   ): [hasura_crdt!]!
+  """
+  fetch data from the table: "knex_migrations"
+  """
+  hasura_knex_migrations(
+    """distinct select on columns"""
+    distinct_on: [hasura_knex_migrations_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [hasura_knex_migrations_order_by!]
+    """filter the rows returned"""
+    where: hasura_knex_migrations_bool_exp
+  ): [hasura_knex_migrations!]!
+  """
+  fetch aggregated fields from the table: "knex_migrations"
+  """
+  hasura_knex_migrations_aggregate(
+    """distinct select on columns"""
+    distinct_on: [hasura_knex_migrations_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [hasura_knex_migrations_order_by!]
+    """filter the rows returned"""
+    where: hasura_knex_migrations_bool_exp
+  ): hasura_knex_migrations_aggregate!
+  """fetch data from the table: "knex_migrations" using primary key columns"""
+  hasura_knex_migrations_by_pk(id: Int!): hasura_knex_migrations
+  """
+  fetch data from the table in a streaming manner: "knex_migrations"
+  """
+  hasura_knex_migrations_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [hasura_knex_migrations_stream_cursor_input]!
+    """filter the rows returned"""
+    where: hasura_knex_migrations_bool_exp
+  ): [hasura_knex_migrations!]!
   public_hello: String
 }
 
@@ -1438,6 +2283,23 @@ input hasura_timestamptz_comparison_exp {
   _lte: hasura_timestamptz
   _neq: hasura_timestamptz
   _nin: [hasura_timestamptz!]
+}
+
+scalar hasura_uuid
+
+"""
+Boolean expression to compare columns of type "uuid". All fields are combined with logical 'AND'.
+"""
+input hasura_uuid_comparison_exp {
+  _eq: hasura_uuid
+  _gt: hasura_uuid
+  _gte: hasura_uuid
+  _in: [hasura_uuid!]
+  _is_null: Boolean
+  _lt: hasura_uuid
+  _lte: hasura_uuid
+  _neq: hasura_uuid
+  _nin: [hasura_uuid!]
 }
 
 enum Claim {

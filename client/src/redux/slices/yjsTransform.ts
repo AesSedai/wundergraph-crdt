@@ -7,10 +7,12 @@ import { InitialState, PersistState } from "./authorSlice"
 export const yjsTransform = createTransform<InitialState, PersistState>(
     // transform state on its way to being serialized and persisted.
     (inboundState, key) => {
-        console.log("transform inbound", inboundState)
+        console.log("transform inbound", inboundState, "sv", fromUint8Array(Y.encodeStateVector(inboundState.doc)))
 
         return {
             ...omit(inboundState, "doc"),
+            clientID: inboundState.doc.clientID,
+            guid: inboundState.doc.guid,
             encodeState: fromUint8Array(Y.encodeStateAsUpdate(inboundState.doc))
         }
     },
@@ -18,12 +20,15 @@ export const yjsTransform = createTransform<InitialState, PersistState>(
     (outboundState, key) => {
         console.log("transform outbound", outboundState)
 
-        const doc = new Y.Doc()
+        const doc = new Y.Doc({ guid: outboundState.guid })
+        doc.clientID = outboundState.clientID
         const ymap1 = doc.getMap("data")
         Y.applyUpdate(doc, toUint8Array(outboundState.encodeState))
         return {
             ...omit(outboundState, "encodeState"),
             sv: fromUint8Array(Y.encodeStateVector(doc)),
+            clientID: doc.clientID,
+            guid: doc.guid,
             doc: doc
         }
     },

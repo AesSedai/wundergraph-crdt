@@ -1,0 +1,8 @@
+mutation ($client: hasura_clients_insert_input!) {
+    hasura_insert_clients_one(object: $client, on_conflict: { constraint: clients_client_unique, update_columns: [guid, vector] }) {
+        __typename
+        id
+        guid
+        client
+    }
+}

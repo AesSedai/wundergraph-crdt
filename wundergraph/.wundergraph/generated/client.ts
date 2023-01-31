@@ -19,6 +19,8 @@ import type {
 	CreateCrdtResponseData,
 	DeleteBookInput,
 	DeleteBookResponseData,
+	QueryClientInput,
+	QueryClientResponseData,
 	QueryCrdtInput,
 	QueryCrdtResponseData,
 	QueryGetAuthorsInput,
@@ -38,6 +40,8 @@ import type {
 	UpdateBookResponseData,
 	UpdateCrdtInput,
 	UpdateCrdtResponseData,
+	UpsertClientInput,
+	UpsertClientResponseData,
 	UpsertCrdtInput,
 	UpsertCrdtResponseData,
 } from "./models";
@@ -48,7 +52,7 @@ export const WUNDERGRAPH_S3_ENABLED = false;
 export const WUNDERGRAPH_AUTH_ENABLED = false;
 
 export const defaultClientConfig: ClientConfig = {
-	applicationHash: "fcef382a",
+	applicationHash: "689fee2e",
 	baseURL: "http://localhost:9991",
 	sdkVersion: "0.132.1",
 };
@@ -64,6 +68,9 @@ export const operationMetadata: OperationMetadata = {
 		requiresAuthentication: false,
 	},
 	DeleteBook: {
+		requiresAuthentication: false,
+	},
+	QueryClient: {
 		requiresAuthentication: false,
 	},
 	QueryCrdt: {
@@ -94,6 +101,9 @@ export const operationMetadata: OperationMetadata = {
 		requiresAuthentication: false,
 	},
 	UpdateCrdt: {
+		requiresAuthentication: false,
+	},
+	UpsertClient: {
 		requiresAuthentication: false,
 	},
 	UpsertCrdt: {
@@ -146,6 +156,12 @@ export const createClient = (config?: CreateClientConfig) => {
 };
 
 export type Queries = {
+	QueryClient: {
+		input: QueryClientInput;
+		data: QueryClientResponseData;
+		requiresAuthentication: false;
+		liveQuery: boolean;
+	};
 	QueryCrdt: {
 		input: QueryCrdtInput;
 		data: QueryCrdtResponseData;
@@ -207,6 +223,11 @@ export type Mutations = {
 		data: UpdateCrdtResponseData;
 		requiresAuthentication: false;
 	};
+	UpsertClient: {
+		input: UpsertClientInput;
+		data: UpsertClientResponseData;
+		requiresAuthentication: false;
+	};
 	UpsertCrdt: {
 		input: UpsertCrdtInput;
 		data: UpsertCrdtResponseData;
@@ -233,6 +254,12 @@ export type Subscriptions = {
 };
 
 export type LiveQueries = {
+	QueryClient: {
+		input: QueryClientInput;
+		data: QueryClientResponseData;
+		liveQuery: true;
+		requiresAuthentication: false;
+	};
 	QueryCrdt: {
 		input: QueryCrdtInput;
 		data: QueryCrdtResponseData;

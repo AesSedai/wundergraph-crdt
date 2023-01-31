@@ -4,7 +4,7 @@
       "operation_name": "CrdtAuthors",
       "api_mount_path": "CrdtAuthors",
       "file_path": "CrdtAuthors.graphql",
-      "content": "subscription CrdtAuthors($limit: Int!, $sv: String! @hooksVariable, $initialSync: Boolean! = true @hooksVariable ){hasura_authors(limit: $limit, order_by: {created_at: asc}){__typename id name updated_at books(order_by: {created_at: asc}){__typename id title isbn updated_at}}}"
+      "content": "subscription CrdtAuthors($limit: Int!, $sv: String! @hooksVariable, $clientId: String! @hooksVariable, $guid: String! @hooksVariable ){hasura_authors(limit: $limit, order_by: [{created_at: asc},{id: asc}]){__typename id name updated_at books(order_by: [{created_at: asc},{id: asc}]){__typename id title isbn updated_at}}}"
     },
     {
       "operation_name": "CreateBook",
@@ -16,7 +16,7 @@
       "operation_name": "CreateCrdt",
       "api_mount_path": "CreateCrdt",
       "file_path": "CreateCrdt.graphql",
-      "content": "mutation CreateCrdt($crdt: hasura_crdt_insert_input!){hasura_insert_crdt_one(object: $crdt){id client state vector}}"
+      "content": "mutation CreateCrdt($crdt: hasura_crdt_insert_input!){hasura_insert_crdt_one(object: $crdt){__typename id guid client state vector}}"
     },
     {
       "operation_name": "DeleteBook",
@@ -25,10 +25,16 @@
       "content": "mutation DeleteBook($id: String!){hasura_delete_books_by_pk(id: $id){id}}"
     },
     {
+      "operation_name": "QueryClient",
+      "api_mount_path": "QueryClient",
+      "file_path": "QueryClient.graphql",
+      "content": "query QueryClient($client: String!, $room: String!){hasura_clients(where: {client: {_eq: $client},crdt: {room: {_eq: $room}}}){id vector}}"
+    },
+    {
       "operation_name": "QueryCrdt",
       "api_mount_path": "QueryCrdt",
       "file_path": "QueryCrdt.graphql",
-      "content": "query QueryCrdt($client: String!){hasura_crdt(where: {client: {_eq: $client}}){id __typename client state vector created_at updated_at}}"
+      "content": "query QueryCrdt($room: String!){hasura_crdt(where: {room: {_eq: $room}}){id __typename client guid state vector}}"
     },
     {
       "operation_name": "QueryGetAuthors",
@@ -58,7 +64,7 @@
       "operation_name": "SubscribeAuthors",
       "api_mount_path": "SubscribeAuthors",
       "file_path": "SubscribeAuthors.graphql",
-      "content": "subscription SubscribeAuthors($limit: Int!){hasura_authors(limit: $limit, order_by: {created_at: asc}){__typename id name updated_at books(order_by: {created_at: asc}){__typename id title isbn updated_at}}}"
+      "content": "subscription SubscribeAuthors($limit: Int!){hasura_authors(limit: $limit, order_by: [{created_at: asc},{id: asc}]){__typename id name updated_at books(order_by: [{created_at: asc},{id: asc}]){__typename id title isbn updated_at}}}"
     },
     {
       "operation_name": "SubscribeBooks",
@@ -85,10 +91,16 @@
       "content": "mutation UpdateCrdt($client: String!, $state: String!, $vector: String!){hasura_update_crdt(where: {client: {_eq: $client}}, _set: {state: $state,vector: $vector}){returning {id}}}"
     },
     {
+      "operation_name": "UpsertClient",
+      "api_mount_path": "UpsertClient",
+      "file_path": "UpsertClient.graphql",
+      "content": "mutation UpsertClient($client: hasura_clients_insert_input!){hasura_insert_clients_one(object: $client, on_conflict: {constraint: clients_client_unique,update_columns: [guid,vector]}){__typename id guid client}}"
+    },
+    {
       "operation_name": "UpsertCrdt",
       "api_mount_path": "UpsertCrdt",
       "file_path": "UpsertCrdt.graphql",
-      "content": "mutation UpsertCrdt($crdt: hasura_crdt_insert_input!){hasura_insert_crdt_one(object: $crdt, on_conflict: {constraint: crdt_client_unique,update_columns: [state,vector]}){id}}"
+      "content": "mutation UpsertCrdt($client: String!, $crdt: hasura_crdt_set_input!){hasura_update_crdt(where: {client: {_eq: $client}}, _set: $crdt){returning {id}}}"
     }
   ],
   "typescript_operation_files": null

@@ -1,0 +1,6 @@
+query ($client: String!, $room: String!) {
+    hasura_clients(where: { client: { _eq: $client }, crdt: { room: { _eq: $room } } }) {
+        id
+        vector
+    }
+}

@@ -8,9 +8,11 @@ import {
 	CreateCrdtResponse,
 	DeleteBookInput,
 	DeleteBookResponse,
+	InternalQueryClientInput,
 	InternalQueryCrdtInput,
 	InternalQueryGetAuthorsInput,
 	InternalQueryGetBooksInput,
+	QueryClientResponse,
 	QueryCrdtResponse,
 	QueryGetAuthorsResponse,
 	QueryGetBooksResponse,
@@ -23,11 +25,14 @@ import {
 	UpdateBookResponse,
 	UpdateCrdtInput,
 	UpdateCrdtResponse,
+	UpsertClientInput,
+	UpsertClientResponse,
 	UpsertCrdtInput,
 	UpsertCrdtResponse,
 } from "./models";
 
 export interface Queries {
+	QueryClient: (options: OperationArgsWithInput<InternalQueryClientInput>) => Promise<QueryClientResponse>;
 	QueryCrdt: (options: OperationArgsWithInput<InternalQueryCrdtInput>) => Promise<QueryCrdtResponse>;
 	QueryGetAuthors: (options: OperationArgsWithInput<InternalQueryGetAuthorsInput>) => Promise<QueryGetAuthorsResponse>;
 	QueryGetBooks: (options: OperationArgsWithInput<InternalQueryGetBooksInput>) => Promise<QueryGetBooksResponse>;
@@ -42,6 +47,7 @@ export interface Mutations {
 	UpdateAuthorName: (options: OperationArgsWithInput<UpdateAuthorNameInput>) => Promise<UpdateAuthorNameResponse>;
 	UpdateBook: (options: OperationArgsWithInput<UpdateBookInput>) => Promise<UpdateBookResponse>;
 	UpdateCrdt: (options: OperationArgsWithInput<UpdateCrdtInput>) => Promise<UpdateCrdtResponse>;
+	UpsertClient: (options: OperationArgsWithInput<UpsertClientInput>) => Promise<UpsertClientResponse>;
 	UpsertCrdt: (options: OperationArgsWithInput<UpsertCrdtInput>) => Promise<UpsertCrdtResponse>;
 }
 

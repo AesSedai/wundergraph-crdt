@@ -1,10 +1,15 @@
-subscription ($limit: Int!, $sv: String! @hooksVariable, $initialSync: Boolean! = true @hooksVariable) {
-    hasura_authors(limit: $limit, order_by: { created_at: asc }) {
+subscription (
+    $limit: Int!
+    $sv: String! @hooksVariable
+    $clientId: String! @hooksVariable
+    $guid: String! @hooksVariable
+) {
+    hasura_authors(limit: $limit, order_by: [{ created_at: asc }, { id: asc }]) {
         __typename
         id
         name
         updated_at
-        books(order_by: { created_at: asc }) {
+        books(order_by: [{ created_at: asc }, { id: asc }]) {
             __typename
             id
             title
