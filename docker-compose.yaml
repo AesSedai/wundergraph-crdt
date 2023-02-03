@@ -19,6 +19,20 @@ services:
         networks:
             - app
 
+    caddy:
+        image: caddy:2.6.2-alpine
+        environment:
+            CADDY_PROXY_URL: ${CADDY_PROXY_URL}
+            SERVER_PORT_HOST: ${SERVER_PORT_HOST}
+            CLIENT_HOST_URL: ${CLIENT_HOST_URL}
+        volumes:
+            - ./caddy/caddyfile:/etc/caddy/Caddyfile
+        ports:
+            - 80:80
+            - 443:443
+        networks:
+            - app
+
     client:
         build: ./client
         environment:

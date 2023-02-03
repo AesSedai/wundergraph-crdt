@@ -1,3 +1,4 @@
+import { isEmpty } from "lodash"
 import { FC, useEffect } from "react"
 import { apply } from "../redux/slices/authorSlice"
 import { useAppDispatch, useAppSelector } from "../redux/store/hooks"
@@ -23,7 +24,7 @@ const Background: FC = () => {
 
     useEffect(() => {
         console.log("data changed", data)
-        if (data != null) {
+        if (data != null && !isEmpty(data)) {
             // data is technically just a string
             dispatch(apply(data as unknown as string))
         }

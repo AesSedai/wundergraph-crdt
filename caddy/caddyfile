@@ -1,0 +1,8 @@
+{$CADDY_PROXY_URL} {
+   reverse_proxy http://server:{$SERVER_PORT_HOST} {
+      header_down Access-Control-Allow-Origin {$CLIENT_HOST_URL}
+      header_down Access-Control-Allow-Credentials "true"
+   }
+   header Access-Control-Allow-Methods *
+   tls internal
+}

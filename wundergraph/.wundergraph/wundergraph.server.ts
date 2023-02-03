@@ -8,6 +8,8 @@ import type { InternalClient } from "./generated/wundergraph.internal.client"
 import type { GraphQLExecutionContext } from "./generated/wundergraph.server"
 import { syncronize } from "./lib/y-pojo/y-pojo"
 const { diff: pDiff } = require("./lib/pigeon")
+import { cloneDeep } from "lodash"
+import { writeUpdateMessageFromTransaction } from "./lib/yjs/src/utils/Transaction.js"
 
 const docMap = new Map<string, Y.Doc>()
 const roomName = "authors"
@@ -66,7 +68,7 @@ export default configureWunderGraphServer<HooksConfig, InternalClient>(() => ({
                         docMap.set(roomName, ydoc1)
 
                         ydoc1.on("update", (update, origin, doc, transaction) => {
-                            // console.log("received updated for doc from origin", origin, "update", update)
+                            console.log("received updated for doc from origin", origin, "update", fromUint8Array(update))
                             // Y.logUpdate(update)
                         })
                     }
@@ -122,10 +124,28 @@ export default configureWunderGraphServer<HooksConfig, InternalClient>(() => ({
                     console.log("synchronizing from vector", client.vector)
 
                     const syncDiffStart = process.hrtime()
-                    ydoc1.transact(() => {
+                    let t: Y.Transaction | null = null
+
+                    ydoc1.transact((tx) => {
                         syncronize(yDataMap, response!.data!)
+                        t = cloneDeep(tx)
                     })
+
+                    if (t == null) {
+                        throw new Error("t cannot be null")
+                    }
+
+                    const encoder = new Y.UpdateEncoderV1()
+                    const hasContent = writeUpdateMessageFromTransaction(encoder, t)
+                    console.log("update has content", hasContent, fromUint8Array(encoder.toUint8Array()))
+
                     const syncDiffEnd = process.hrtime(syncDiffStart)
+
+                    if (!hasContent) {
+                        // quick return
+                        return { data: {} } as unknown as any
+                    }
+
                     diff = Y.encodeStateAsUpdate(ydoc1, toUint8Array(client.vector))
                     console.log("syncrhonized, got diff in", syncDiffEnd[1] / 1000000, "upserting CRDT result", ydoc1.clientID.toString())
 

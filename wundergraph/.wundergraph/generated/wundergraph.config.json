@@ -5530,11 +5530,11 @@
       "allowCredentials": true,
       "allowedOrigins": [
         {
-          "kind": 1,
-          "staticVariableContent": "",
-          "placeholderVariableName": "",
+          "kind": 0,
           "environmentVariableDefaultValue": "",
-          "environmentVariableName": "CLIENT_HOST_URL"
+          "environmentVariableName": "",
+          "placeholderVariableName": "",
+          "staticVariableContent": "*"
         }
       ]
     },

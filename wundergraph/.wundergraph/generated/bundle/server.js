@@ -766,9 +766,9 @@ function syncChild(child) {
     syncronize(arr, child);
     return arr;
   } else if (childType == "Object") {
-    const map = new Y.Map();
-    syncronize(map, child);
-    return map;
+    const map4 = new Y.Map();
+    syncronize(map4, child);
+    return map4;
   } else {
     return child;
   }
@@ -786,6 +786,146 @@ function detectManagedType(managed) {
     return "undefined";
   }
 }
+
+// wundergraph.server.ts
+var import_lodash = require("lodash");
+
+// lib/yjs/src/utils/DeleteSet.js
+var array = __toESM(require("lib0/array"), 1);
+var math = __toESM(require("lib0/math"), 1);
+var map = __toESM(require("lib0/map"), 1);
+var encoding = __toESM(require("lib0/encoding"), 1);
+var decoding = __toESM(require("lib0/decoding"), 1);
+var sortAndMergeDeleteSet = (ds) => {
+  ds.clients.forEach((dels) => {
+    dels.sort((a, b) => a.clock - b.clock);
+    let i, j;
+    for (i = 1, j = 1; i < dels.length; i++) {
+      const left = dels[j - 1];
+      const right = dels[i];
+      if (left.clock + left.len >= right.clock) {
+        left.len = math.max(left.len, right.clock + right.len - left.clock);
+      } else {
+        if (j < i) {
+          dels[j] = right;
+        }
+        j++;
+      }
+    }
+    dels.length = j;
+  });
+};
+var writeDeleteSet = (encoder, ds) => {
+  encoding.writeVarUint(encoder.restEncoder, ds.clients.size);
+  ds.clients.forEach((dsitems, client) => {
+    encoder.resetDsCurVal();
+    encoding.writeVarUint(encoder.restEncoder, client);
+    const len = dsitems.length;
+    encoding.writeVarUint(encoder.restEncoder, len);
+    for (let i = 0; i < len; i++) {
+      const item = dsitems[i];
+      encoder.writeDsClock(item.clock);
+      encoder.writeDsLen(item.len);
+    }
+  });
+};
+
+// lib/yjs/src/utils/encoding.js
+var encoding2 = __toESM(require("lib0/encoding"), 1);
+var decoding2 = __toESM(require("lib0/decoding"), 1);
+var binary = __toESM(require("lib0/binary"), 1);
+var map2 = __toESM(require("lib0/map"), 1);
+var math2 = __toESM(require("lib0/math"), 1);
+var writeStructs = (encoder, structs, client, clock) => {
+  clock = math2.max(clock, structs[0].id.clock);
+  const startNewStructs = findIndexSS(structs, clock);
+  encoding2.writeVarUint(encoder.restEncoder, structs.length - startNewStructs);
+  encoder.writeClient(client);
+  encoding2.writeVarUint(encoder.restEncoder, clock);
+  const firstStruct = structs[startNewStructs];
+  firstStruct.write(encoder, clock - firstStruct.id.clock);
+  for (let i = startNewStructs + 1; i < structs.length; i++) {
+    structs[i].write(encoder, 0);
+  }
+};
+var writeClientsStructs = (encoder, store, _sm) => {
+  const sm = /* @__PURE__ */ new Map();
+  _sm.forEach((clock, client) => {
+    if (getState(store, client) > clock) {
+      sm.set(client, clock);
+    }
+  });
+  getStateVector(store).forEach((clock, client) => {
+    if (!_sm.has(client)) {
+      sm.set(client, 0);
+    }
+  });
+  encoding2.writeVarUint(encoder.restEncoder, sm.size);
+  Array.from(sm.entries()).sort((a, b) => b[0] - a[0]).forEach(([client, clock]) => {
+    writeStructs(encoder, store.clients.get(client), client, clock);
+  });
+};
+var writeStructsFromTransaction = (encoder, transaction) => writeClientsStructs(encoder, transaction.doc.store, transaction.beforeState);
+
+// lib/yjs/src/utils/StructStore.js
+var math3 = __toESM(require("lib0/math"), 1);
+var error = __toESM(require("lib0/error"), 1);
+var getStateVector = (store) => {
+  const sm = /* @__PURE__ */ new Map();
+  store.clients.forEach((structs, client) => {
+    const struct = structs[structs.length - 1];
+    sm.set(client, struct.id.clock + struct.length);
+  });
+  return sm;
+};
+var getState = (store, client) => {
+  const structs = store.clients.get(client);
+  if (structs === void 0) {
+    return 0;
+  }
+  const lastStruct = structs[structs.length - 1];
+  return lastStruct.id.clock + lastStruct.length;
+};
+var findIndexSS = (structs, clock) => {
+  let left = 0;
+  let right = structs.length - 1;
+  let mid = structs[right];
+  let midclock = mid.id.clock;
+  if (midclock === clock) {
+    return right;
+  }
+  let midindex = math3.floor(clock / (midclock + mid.length - 1) * right);
+  while (left <= right) {
+    mid = structs[midindex];
+    midclock = mid.id.clock;
+    if (midclock <= clock) {
+      if (clock < midclock + mid.length) {
+        return midindex;
+      }
+      left = midindex + 1;
+    } else {
+      right = midindex - 1;
+    }
+    midindex = math3.floor((left + right) / 2);
+  }
+  throw error.unexpectedCase();
+};
+
+// lib/yjs/src/utils/Transaction.js
+var map3 = __toESM(require("lib0/map"), 1);
+var math4 = __toESM(require("lib0/math"), 1);
+var set = __toESM(require("lib0/set"), 1);
+var logging = __toESM(require("lib0/logging"), 1);
+var import_function = require("lib0/function");
+var writeUpdateMessageFromTransaction = (encoder, transaction) => {
+  if (transaction.deleteSet.clients.size === 0 && !map3.any(transaction.afterState, (clock, client) => transaction.beforeState.get(client) !== clock)) {
+    return false;
+  }
+  sortAndMergeDeleteSet(transaction.deleteSet);
+  writeStructsFromTransaction(encoder, transaction);
+  writeDeleteSet(encoder, transaction.deleteSet);
+  return true;
+};
 
 // wundergraph.server.ts
 var { diff: pDiff } = require_pigeon();
@@ -835,6 +975,7 @@ var wundergraph_server_default = (0, import_server.configureWunderGraphServer)((
             }
             docMap.set(roomName, ydoc1);
             ydoc1.on("update", (update, origin, doc, transaction) => {
+              console.log("received updated for doc from origin", origin, "update", (0, import_js_base64.fromUint8Array)(update));
             });
           }
           if (response != null) {
@@ -880,10 +1021,21 @@ var wundergraph_server_default = (0, import_server.configureWunderGraphServer)((
           console.log("pDiff time", pDiffEnd[1] / 1e6, "changes", JSON.stringify(pDiffContent, null, 2));
           console.log("synchronizing from vector", client.vector);
           const syncDiffStart = process.hrtime();
-          ydoc1.transact(() => {
+          let t = null;
+          ydoc1.transact((tx) => {
             syncronize(yDataMap, response.data);
+            t = (0, import_lodash.cloneDeep)(tx);
           });
+          if (t == null) {
+            throw new Error("t cannot be null");
+          }
+          const encoder = new Y2.UpdateEncoderV1();
+          const hasContent = writeUpdateMessageFromTransaction(encoder, t);
+          console.log("update has content", hasContent, (0, import_js_base64.fromUint8Array)(encoder.toUint8Array()));
           const syncDiffEnd = process.hrtime(syncDiffStart);
+          if (!hasContent) {
+            return { data: {} };
+          }
           diff = Y2.encodeStateAsUpdate(ydoc1, (0, import_js_base64.toUint8Array)(client.vector));
           console.log("syncrhonized, got diff in", syncDiffEnd[1] / 1e6, "upserting CRDT result", ydoc1.clientID.toString());
           const crdtResponse = await internalClient.mutations.UpsertCrdt({
